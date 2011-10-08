@@ -76,3 +76,4 @@
 (global-set-key (kbd "C-c f") 'bm-selective-display)
 (global-set-key (kbd "C-9") 'kmacro-start-macro)
 (global-set-key (kbd "C-0") 'kmacro-end-macro)
+(global-set-key (kbd "M-o c") 'facemenu-set-foreground)

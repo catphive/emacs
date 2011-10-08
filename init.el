@@ -41,6 +41,7 @@
 
 ;; Dired.
 (put 'dired-find-alternate-file 'disabled nil)
+(require 'dired-x)
 
 ;; browse-url.
 (setq-default browse-url-new-window-flag t)
@@ -66,8 +67,6 @@
 ;; Global Key Bindings.
 (global-set-key (kbd "C-c s") 'multi-occur-in-matching-buffers)
 (global-set-key (kbd "C-c o") 'ff-find-other-file)
-(require 'dired)
-(global-set-key (kbd "C-c d") 'dired-jump)
 (global-set-key (kbd "C-c j") 'goto-line)
 (global-set-key (kbd "C-c r") 'rotate-windows)
 (global-set-key (kbd "C-c t") 'toggle-truncate-lines)

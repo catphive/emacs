@@ -28,10 +28,7 @@
 
 ;; Load path.
 (add-to-list 'load-path "~/.emacs.d")
-
-;; cl.
-(setq byte-compile-warnings '(not cl-functions))
-(require 'cl)
+(require 'c5-util)
 
 ;;; Modes.
 ;; ff-find-other-file config
@@ -58,17 +55,35 @@
 ;; ediff.
 (setq-default ediff-window-setup-function 'ediff-setup-windows-plain)
 
+;; Semantic.
+(setq semantic-default-submodes '(global-semantic-idle-scheduler-mode
+				  global-semanticdb-minor-mode
+				  global-semantic-idle-summary-mode
+				  global-semantic-stickyfunc-mode))
+(semantic-mode 1)
+(setq-default semantic-complete-inline-analyzer-displayor-class
+	      'semantic-displayor-ghost)
+
 ;;; Languages.
 
-;; C++.
+;; C/C++/Java/etc.
 ;; Treat .h files as c++.
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+
+(c5-defhook c5-c-common-hook (c-mode-common-hook)
+  (local-set-key (kbd "M-/") 'semantic-complete-analyze-inline))
+
+;; elisp.
+(c5-defhook c5-elisp-common-hook (lisp-interaction-mode-hook
+                                  emacs-lisp-mode-hook)
+  (local-set-key (kbd "C-c <RET>") 'c5-macroexpand-point)
+  (local-set-key (kbd "M-/") 'lisp-complete-symbol)
+  (eldoc-mode 1))
 
 ;; Global Key Bindings.
 (global-set-key (kbd "C-c s") 'multi-occur-in-matching-buffers)
 (global-set-key (kbd "C-c o") 'ff-find-other-file)
 (global-set-key (kbd "C-c j") 'goto-line)
-(global-set-key (kbd "C-c r") 'rotate-windows)
 (global-set-key (kbd "C-c t") 'toggle-truncate-lines)
 (global-set-key (kbd "C-c g") 'revert-buffer)
 (global-set-key (kbd "C-c i") 'imenu)

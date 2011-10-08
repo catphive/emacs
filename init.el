@@ -8,6 +8,9 @@
 (which-function-mode 1)
 (setq column-number-mode t)
 
+;; font.
+(set-face-attribute 'default nil :height 100)
+
 ;; clipboard.
 (if (not (eq system-type 'darwin))
     (progn
@@ -71,14 +74,16 @@
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 
 (c5-defhook c5-c-common-hook (c-mode-common-hook)
-  (local-set-key (kbd "M-/") 'semantic-complete-analyze-inline))
+  (local-set-key (kbd "M-/") 'semantic-complete-analyze-inline)
+  (linum-mode 1))
 
 ;; elisp.
 (c5-defhook c5-elisp-common-hook (lisp-interaction-mode-hook
                                   emacs-lisp-mode-hook)
   (local-set-key (kbd "C-c <RET>") 'c5-macroexpand-point)
   (local-set-key (kbd "M-/") 'lisp-complete-symbol)
-  (eldoc-mode 1))
+  (eldoc-mode 1)
+  (linum-mode 1))
 
 ;; Global Key Bindings.
 (global-set-key (kbd "C-c s") 'multi-occur-in-matching-buffers)

@@ -13,4 +13,21 @@
     (pp (macroexpand sexp)))
   (with-current-buffer "*el-macroexpansion*" (emacs-lisp-mode)))
 
+(defun c5-find-definition (arg)
+    "Jump to the definition of the symbol, type or function at point.
+  With prefix arg, find in other window."
+    (interactive "P")
+    (let* ((tag (or (semantic-idle-summary-current-symbol-info-context)
+                    (semantic-idle-summary-current-symbol-info-brutish)
+                    (error "No known tag at point")))
+           (pos (or (semantic-tag-start tag)
+                    (error "Tag definition not found")))
+           (file (semantic-tag-file-name tag)))
+      (ring-insert find-tag-marker-ring (point-marker))
+      (if file
+          (if arg (find-file-other-window file) (find-file file))
+        (if arg (switch-to-buffer-other-window (current-buffer))))
+      (goto-char pos)
+      (ring-insert tags-location-ring (point-marker))))
+
 (provide 'c5-util)

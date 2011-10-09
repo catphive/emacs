@@ -75,6 +75,8 @@
 
 (c5-defhook c5-c-common-hook (c-mode-common-hook)
   (local-set-key (kbd "M-/") 'semantic-complete-analyze-inline)
+  (local-set-key (kbd "M-,") 'pop-tag-mark)
+  (local-set-key (kbd "M-.") 'c5-find-definition)
   (linum-mode 1))
 
 ;; elisp.

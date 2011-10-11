@@ -13,6 +13,8 @@
     (pp (macroexpand sexp)))
   (with-current-buffer "*el-macroexpansion*" (emacs-lisp-mode)))
 
+;; etags must be loaded so we can use related tag rings for history.
+(require 'etags)
 (defun c5-find-definition (arg)
     "Jump to the definition of the symbol, type or function at point.
   With prefix arg, find in other window."

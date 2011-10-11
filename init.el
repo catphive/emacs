@@ -29,7 +29,7 @@
 ;; "y or n" instead of "yes or no"
 (fset 'yes-or-no-p 'y-or-n-p)
 
-;; Load path.
+;; Load own code.
 (add-to-list 'load-path "~/.emacs.d")
 (require 'c5-util)
 
@@ -50,6 +50,8 @@
 
 ;; Tramp.
 (require 'tramp)
+;; emacs 24 only, so don't fail if missing.
+(require 'tramp-sh nil t)
 (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
 
 ;; woman.
@@ -67,6 +69,12 @@
 (setq-default semantic-complete-inline-analyzer-displayor-class
 	      'semantic-displayor-ghost)
 
+;; add some keybindings to languages that support semantic.
+(c5-defhook c5-sem-langs-hook (c-mode-common-hook python-mode-hook)
+  (local-set-key (kbd "M-/") 'semantic-complete-analyze-inline)
+  (local-set-key (kbd "M-,") 'pop-tag-mark)
+  (local-set-key (kbd "M-.") 'c5-find-definition))
+
 ;;; Languages.
 
 ;; C/C++/Java/etc.
@@ -74,9 +82,6 @@
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 
 (c5-defhook c5-c-common-hook (c-mode-common-hook)
-  (local-set-key (kbd "M-/") 'semantic-complete-analyze-inline)
-  (local-set-key (kbd "M-,") 'pop-tag-mark)
-  (local-set-key (kbd "M-.") 'c5-find-definition)
   (linum-mode 1))
 
 ;; elisp.
@@ -86,6 +91,10 @@
   (local-set-key (kbd "M-/") 'lisp-complete-symbol)
   (eldoc-mode 1)
   (linum-mode 1))
+
+;; Third party modes.
+;; Failure to find third party code should not break emacs config.
+(add-to-list 'load-path "~/Dropbox/emacs")
 
 ;; Global Key Bindings.
 (global-set-key (kbd "C-c s") 'multi-occur-in-matching-buffers)

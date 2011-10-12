@@ -32,4 +32,8 @@
       (goto-char pos)
       (ring-insert tags-location-ring (point-marker))))
 
+(defun c5-try-enable (mode-sym)
+  "Enable a mode if the mode function is bound."
+  (when (fboundp mode-sym) (funcall mode-sym 1)))
+
 (provide 'c5-util)

@@ -1,3 +1,7 @@
+;; Load own code.
+(add-to-list 'load-path "~/.emacs.d")
+(require 'c5-util)
+
 ;; Basic config.
 (setq-default indent-tabs-mode nil)
 (transient-mark-mode 1)
@@ -10,7 +14,13 @@
 (setq auto-save-default nil)
 (which-function-mode 1)
 (setq column-number-mode t)
+(c5-try-enable 'electric-pair-mode) ; Built-in on emacs 24.
+(c5-try-enable 'electric-indent-mode) ; Built-in on emacs 24.
+(c5-try-enable 'ido-mode) ; Built-in on emacs 22.
 
+;; Make fringe show buffer boundaries.
+(setq-default indicate-empty-lines t
+              indicate-buffer-boundaries 'left)
 
 ;; font.
 (set-face-attribute 'default nil :height 100)
@@ -32,10 +42,6 @@
 
 ;; "y or n" instead of "yes or no"
 (fset 'yes-or-no-p 'y-or-n-p)
-
-;; Load own code.
-(add-to-list 'load-path "~/.emacs.d")
-(require 'c5-util)
 
 ;;; Modes.
 ;; ff-find-other-file config
@@ -87,7 +93,7 @@
                                lisp-interaction-mode-hook
                                emacs-lisp-mode-hook)
   ;; Emacs 21 doesn't have linum-mode.
-  (when (fboundp 'linum-mode) (linum-mode 1)))
+  (c5-try-enable 'linum-mode))
 
 ;; C/C++/Java/etc.
 ;; Treat .h files as c++.

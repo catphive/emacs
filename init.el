@@ -1,4 +1,7 @@
 ;; Basic config.
+(setq-default indent-tabs-mode nil)
+(transient-mark-mode 1)
+(global-font-lock-mode 1)
 (tool-bar-mode -1)
 (setq inhibit-splash-screen t)
 (show-paren-mode 1)
@@ -7,6 +10,7 @@
 (setq auto-save-default nil)
 (which-function-mode 1)
 (setq column-number-mode t)
+
 
 ;; font.
 (set-face-attribute 'default nil :height 100)
@@ -21,10 +25,10 @@
 
 ;; title
 (setq frame-title-format
-	  '("" invocation-name ": "
-		(:eval (if (buffer-file-name)
-				   (abbreviate-file-name (buffer-file-name))
-				 "%b"))))
+      '("" invocation-name ": "
+        (:eval (if (buffer-file-name)
+                   (abbreviate-file-name (buffer-file-name))
+                 "%b"))))
 
 ;; "y or n" instead of "yes or no"
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -36,8 +40,8 @@
 ;;; Modes.
 ;; ff-find-other-file config
 (setq-default ff-search-directories
-	      '("." "../Include" "../Src" "../Source" "../include" "../src"
-		"/usr/include" "/usr/local/include/*"))
+              '("." "../Include" "../Src" "../Source" "../include" "../src"
+                "/usr/include" "/usr/local/include/*"))
 
 ;; Dired.
 (put 'dired-find-alternate-file 'disabled nil)
@@ -61,36 +65,40 @@
 (setq-default ediff-window-setup-function 'ediff-setup-windows-plain)
 
 ;; Semantic.
-(setq semantic-default-submodes '(global-semantic-idle-scheduler-mode
-				  global-semanticdb-minor-mode
-				  global-semantic-idle-summary-mode
-				  global-semantic-stickyfunc-mode))
-(semantic-mode 1)
-(setq-default semantic-complete-inline-analyzer-displayor-class
-	      'semantic-displayor-ghost)
+;; Only use semantic if defined.
+(when (fboundp 'semantic-mode)
+  (setq semantic-default-submodes '(global-semantic-idle-scheduler-mode
+                                    global-semanticdb-minor-mode
+                                    global-semantic-idle-summary-mode
+                                    global-semantic-stickyfunc-mode))
+  (semantic-mode 1)
+  (setq-default semantic-complete-inline-analyzer-displayor-class
+                'semantic-displayor-ghost)
+  ;; add some keybindings to languages that support semantic.
+  (c5-defhook c5-sem-langs-hook (c-mode-common-hook python-mode-hook)
+    (local-set-key (kbd "M-/") 'semantic-complete-analyze-inline)
+    (local-set-key (kbd "M-,") 'pop-tag-mark)
+    (local-set-key (kbd "M-.") 'c5-find-definition)))
 
-;; add some keybindings to languages that support semantic.
-(c5-defhook c5-sem-langs-hook (c-mode-common-hook python-mode-hook)
-  (local-set-key (kbd "M-/") 'semantic-complete-analyze-inline)
-  (local-set-key (kbd "M-,") 'pop-tag-mark)
-  (local-set-key (kbd "M-.") 'c5-find-definition))
+
 
 ;;; Languages.
+(c5-defhook c5-all-langs-hook (c-mode-common-hook
+                               lisp-interaction-mode-hook
+                               emacs-lisp-mode-hook)
+  ;; Emacs 21 doesn't have linum-mode.
+  (when (fboundp 'linum-mode) (linum-mode 1)))
 
 ;; C/C++/Java/etc.
 ;; Treat .h files as c++.
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
-
-(c5-defhook c5-c-common-hook (c-mode-common-hook)
-  (linum-mode 1))
 
 ;; elisp.
 (c5-defhook c5-elisp-common-hook (lisp-interaction-mode-hook
                                   emacs-lisp-mode-hook)
   (local-set-key (kbd "C-c <RET>") 'c5-macroexpand-point)
   (local-set-key (kbd "M-/") 'lisp-complete-symbol)
-  (eldoc-mode 1)
-  (linum-mode 1))
+  (eldoc-mode 1))
 
 ;; Third party modes.
 ;; Failure to find third party code should not break emacs config.

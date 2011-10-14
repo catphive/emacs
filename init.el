@@ -110,6 +110,12 @@
 ;; Failure to find third party code should not break emacs config.
 (add-to-list 'load-path "~/Dropbox/emacs")
 
+;; haskell mode.
+(load "~/Dropbox/emacs/haskell-mode-2.8.0/haskell-site-file" t)
+(when (fboundp 'haskell-mode)
+  (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+  (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation))
+
 ;; Global Key Bindings.
 (global-set-key (kbd "C-c s") 'multi-occur-in-matching-buffers)
 (global-set-key (kbd "C-c o") 'ff-find-other-file)

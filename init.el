@@ -23,7 +23,7 @@
               indicate-buffer-boundaries 'left)
 
 ;; font.
-(set-face-attribute 'default nil :height 100)
+(set-face-attribute 'default nil :font "Inconsolata-12")
 
 ;; clipboard.
 (if (not (eq system-type 'darwin))

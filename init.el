@@ -23,7 +23,7 @@
               indicate-buffer-boundaries 'left)
 
 ;; font.
-(when (member "Inconsolata" (font-family-list))
+(when (and (fboundp 'font-family-list) (member "Inconsolata" (font-family-list)))
   (set-face-attribute 'default nil :font "Inconsolata-12"))
 
 ;; clipboard.

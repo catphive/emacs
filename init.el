@@ -82,7 +82,7 @@
   (setq-default semantic-complete-inline-analyzer-displayor-class
                 'semantic-displayor-ghost)
   ;; add some keybindings to languages that support semantic.
-  (c5-defhook c5-sem-langs-hook (c-mode-common-hook python-mode-hook)
+  (c5-defhook c5-sem-langs-hook (c-mode-common-hook)
     (local-set-key (kbd "M-/") 'semantic-complete-analyze-inline)
     (local-set-key (kbd "M-,") 'pop-tag-mark)
     (local-set-key (kbd "M-.") 'c5-find-definition)))

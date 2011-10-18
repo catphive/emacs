@@ -92,9 +92,11 @@
 ;;; Languages.
 (c5-defhook c5-all-langs-hook (c-mode-common-hook
                                lisp-interaction-mode-hook
-                               emacs-lisp-mode-hook)
+                               emacs-lisp-mode-hook
+                               python-mode-hook)
   ;; Emacs 21 doesn't have linum-mode.
-  (c5-try-enable 'linum-mode))
+  (c5-try-enable 'linum-mode)
+  (hs-minor-mode 1))
 
 ;; C/C++/Java/etc.
 ;; Treat .h files as c++.
@@ -131,6 +133,7 @@
 (global-set-key (kbd "C-c t") 'toggle-truncate-lines)
 (global-set-key (kbd "C-c g") 'revert-buffer)
 (global-set-key (kbd "C-c i") 'imenu)
+(global-set-key (kbd "C-c h") 'hs-toggle-hiding)
 (global-set-key (kbd "C-9") 'kmacro-start-macro)
 (global-set-key (kbd "C-0") 'kmacro-end-macro)
 (global-set-key (kbd "M-o c") 'facemenu-set-foreground)

@@ -117,6 +117,13 @@
   (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
   (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation))
 
+;; SLIME.
+(setq inferior-lisp-program "/usr/bin/sbcl")
+(add-to-list 'load-path "~/Dropbox/emacs/slime")
+(require 'slime-autoloads nil t)
+(when (fboundp 'slime-setup)
+  (slime-setup '(slime-fancy)))
+
 ;; Global Key Bindings.
 (global-set-key (kbd "C-c s") 'multi-occur-in-matching-buffers)
 (global-set-key (kbd "C-c o") 'ff-find-other-file)
@@ -124,7 +131,6 @@
 (global-set-key (kbd "C-c t") 'toggle-truncate-lines)
 (global-set-key (kbd "C-c g") 'revert-buffer)
 (global-set-key (kbd "C-c i") 'imenu)
-(global-set-key (kbd "C-c f") 'bm-selective-display)
 (global-set-key (kbd "C-9") 'kmacro-start-macro)
 (global-set-key (kbd "C-0") 'kmacro-end-macro)
 (global-set-key (kbd "M-o c") 'facemenu-set-foreground)

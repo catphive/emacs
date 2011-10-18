@@ -51,7 +51,7 @@
 
 ;; Dired.
 (put 'dired-find-alternate-file 'disabled nil)
-(require 'dired-x)
+(require 'dired-x) ; Sets C-x C-j dired jump keybinding.
 
 ;; browse-url.
 (setq-default browse-url-new-window-flag t)
@@ -59,10 +59,11 @@
       browse-url-generic-program "google-chrome")
 
 ;; Tramp.
-(require 'tramp)
-;; emacs 24 only, so don't fail if missing.
-(require 'tramp-sh nil t)
-(add-to-list 'tramp-remote-path 'tramp-own-remote-path)
+(eval-after-load "tramp"
+  '(progn 
+     ;; emacs 24 only, so don't fail if missing.
+     (require 'tramp-sh nil t)
+     (add-to-list 'tramp-remote-path 'tramp-own-remote-path)))
 
 ;; woman.
 (setq-default woman-use-own-frame nil)
@@ -81,7 +82,7 @@
   (setq-default semantic-complete-inline-analyzer-displayor-class
                 'semantic-displayor-ghost)
   ;; add some keybindings to languages that support semantic.
-  (c5-defhook c5-sem-langs-hook (c-mode-common-hook python-mode-hook)
+  (c5-defhook c5-sem-langs-hook (c-mode-common-hook)
     (local-set-key (kbd "M-/") 'semantic-complete-analyze-inline)
     (local-set-key (kbd "M-,") 'pop-tag-mark)
     (local-set-key (kbd "M-.") 'c5-find-definition)))

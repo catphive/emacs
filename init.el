@@ -23,15 +23,16 @@
               indicate-buffer-boundaries 'left)
 
 ;; font.
-(set-face-attribute 'default nil :font "Inconsolata-12")
+(when (member "Inconsolata" (font-family-list))
+  (set-face-attribute 'default nil :font "Inconsolata-12"))
 
 ;; clipboard.
-(if (not (eq system-type 'darwin))
-    (progn
-      ;; stops killing/yanking interacting with primary X11 selection
-      (setq x-select-enable-primary nil)
-      ;; makes killing/yanking interact with clipboard X11 selection
-      (setq x-select-enable-clipboard t)))
+(unless (eq system-type 'darwin)
+  (progn
+    ;; stops killing/yanking interacting with primary X11 selection
+    (setq x-select-enable-primary nil)
+    ;; makes killing/yanking interact with clipboard X11 selection
+    (setq x-select-enable-clipboard t)))
 
 ;; title
 (setq frame-title-format

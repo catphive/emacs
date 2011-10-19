@@ -23,7 +23,8 @@
               indicate-buffer-boundaries 'left)
 
 ;; font.
-(when (and (fboundp 'font-family-list) (member "Inconsolata" (font-family-list)))
+(when (and (fboundp 'font-family-list)
+           (member "Inconsolata" (font-family-list)))
   (set-face-attribute 'default nil :font "Inconsolata-12"))
 
 ;; clipboard.
@@ -61,7 +62,7 @@
 
 ;; Tramp.
 (eval-after-load "tramp"
-  '(progn 
+  '(progn
      ;; emacs 24 only, so don't fail if missing.
      (require 'tramp-sh nil t)
      (add-to-list 'tramp-remote-path 'tramp-own-remote-path)))

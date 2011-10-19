@@ -113,10 +113,13 @@
 
 ;; Third party modes.
 ;; Failure to find third party code should not break emacs config.
-(add-to-list 'load-path "~/Dropbox/emacs")
+
+;; elpa
+(require 'package)
+(setq-default package-user-dir (expand-file-name "~/Dropbox/emacs_packages"))
+(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 
 ;; haskell mode.
-(load "~/Dropbox/emacs/haskell-mode-2.8.0/haskell-site-file" t)
 (when (fboundp 'haskell-mode)
   (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
   (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation))

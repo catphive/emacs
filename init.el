@@ -131,6 +131,9 @@
 (when (fboundp 'slime-setup)
   (slime-setup '(slime-fancy)))
 
+(require 'pymacs)
+(pymacs-load "ropemacs" "rope-")
+
 ;; Global Key Bindings.
 (global-set-key (kbd "C-c s") 'multi-occur-in-matching-buffers)
 (global-set-key (kbd "C-c o") 'ff-find-other-file)

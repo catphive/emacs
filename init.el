@@ -136,6 +136,10 @@
 (when (fboundp 'slime-setup)
   (slime-setup '(slime-fancy)))
 
+;; octave.
+(add-to-list 'auto-mode-alist '("\\.m\\'" . octave-mode))
+
+;; python.
 (require 'pymacs)
 (pymacs-load "ropemacs" "rope-")
 

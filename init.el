@@ -14,7 +14,6 @@
 (setq auto-save-default nil)
 (which-function-mode 1)
 (setq column-number-mode t)
-(c5-try-enable 'electric-pair-mode) ; Built-in on emacs 24.
 (c5-try-enable 'electric-indent-mode) ; Built-in on emacs 24.
 (c5-try-enable 'ido-mode) ; Built-in on emacs 22.
 
@@ -110,6 +109,12 @@
   (local-set-key (kbd "C-c <RET>") 'c5-macroexpand-point)
   (local-set-key (kbd "M-/") 'lisp-complete-symbol)
   (eldoc-mode 1))
+
+;; general lisp
+(c5-defhook c5-elisp-common-hook (lisp-mode-hook
+                                  lisp-interaction-mode-hook
+                                  emacs-lisp-mode-hook)
+  (c5-try-enable 'paredit-mode))
 
 ;; Third party modes.
 ;; Failure to find third party code should not break emacs config.

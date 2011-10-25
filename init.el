@@ -14,7 +14,6 @@
 (setq auto-save-default nil)
 (which-function-mode 1)
 (setq column-number-mode t)
-(c5-try-enable 'electric-indent-mode) ; Built-in on emacs 24.
 (c5-try-enable 'ido-mode) ; Built-in on emacs 22.
 
 ;; Make fringe show buffer boundaries.
@@ -118,6 +117,7 @@
 
 ;; Third party modes.
 ;; Failure to find third party code should not break emacs config.
+(add-to-list 'load-path "~/Dropbox/emacs")
 
 ;; elpa
 (require 'package)
@@ -140,8 +140,9 @@
 (add-to-list 'auto-mode-alist '("\\.m\\'" . octave-mode))
 
 ;; python.
-(require 'pymacs)
-(pymacs-load "ropemacs" "rope-")
+(require 'pymacs nil t)
+(when (fboundp 'pymacs-load)
+  (pymacs-load "ropemacs" "rope-"))
 
 ;; Global Key Bindings.
 (global-set-key (kbd "C-c s") 'multi-occur-in-matching-buffers)

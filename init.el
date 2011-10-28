@@ -58,13 +58,6 @@
 (setq browse-url-browser-function 'browse-url-generic
       browse-url-generic-program "google-chrome")
 
-;; Tramp.
-(eval-after-load "tramp"
-  '(progn
-     ;; emacs 24 only, so don't fail if missing.
-     (require 'tramp-sh nil t)
-     (add-to-list 'tramp-remote-path 'tramp-own-remote-path)))
-
 ;; woman.
 (setq-default woman-use-own-frame nil)
 

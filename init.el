@@ -137,9 +137,9 @@
 (add-to-list 'auto-mode-alist '("\\.m\\'" . octave-mode))
 
 ;; python.
-(require 'pymacs nil t)
+(load "/usr/share/emacs/site-lisp/pymacs" t)
 (when (fboundp 'pymacs-load)
-  (pymacs-load "ropemacs" "rope-"))
+  (pymacs-load "ropemacs" "rope-" t))
 
 ;; Global Key Bindings.
 (global-set-key (kbd "C-c s") 'multi-occur-in-matching-buffers)

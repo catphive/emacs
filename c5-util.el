@@ -13,6 +13,13 @@
     (pp (macroexpand sexp)))
   (with-current-buffer "*el-macroexpansion*" (emacs-lisp-mode)))
 
+(defun c5-query-user ()
+  "Prompt for string to use during keyboard macro execution.
+Inserts string at point."
+  (interactive)
+  (minibuffer-with-setup-hook (lambda () (kbd-macro-query t))
+    (insert (read-from-minibuffer "input: "))))
+
 ;; etags must be loaded so we can use related tag rings for history.
 (require 'etags)
 (defun c5-find-definition (arg)
@@ -35,5 +42,17 @@
 (defun c5-try-enable (mode-sym)
   "Enable a mode if the mode function is bound."
   (when (fboundp mode-sym) (funcall mode-sym 1)))
+
+;; flymake utils.
+(defun c5-flymake-format-err (err)
+  (format "%s:%d:1:%s " (aref err 5) (aref err 2) (aref err 4)))
+
+(defun c5-flymake-show-error ()
+  (interactive)
+  (let* ((line-no (line-number-at-pos))
+        (errs (find-if (lambda (some-errs) (eq (car some-errs) line-no)) flymake-err-info)))
+    (with-output-to-temp-buffer "*c5-flymake-errors*"
+      (dolist (err (second errs))
+        (princ (c5-flymake-format-err err))))))
 
 (provide 'c5-util)

@@ -15,6 +15,9 @@
 (which-function-mode 1)
 (setq column-number-mode t)
 (c5-try-enable 'ido-mode) ; Built-in on emacs 22.
+(put 'downcase-region 'disabled nil)
+(put 'upcase-region 'disabled nil)
+(put 'narrow-to-region 'disabled nil)
 
 ;; Make fringe show buffer boundaries.
 (setq-default indicate-empty-lines t
@@ -69,18 +72,14 @@
 (when (fboundp 'semantic-mode)
   (setq semantic-default-submodes '(global-semantic-idle-scheduler-mode
                                     global-semanticdb-minor-mode
-                                    global-semantic-idle-summary-mode
                                     global-semantic-stickyfunc-mode))
   (semantic-mode 1)
   (setq-default semantic-complete-inline-analyzer-displayor-class
                 'semantic-displayor-ghost)
   ;; add some keybindings to languages that support semantic.
   (c5-defhook c5-sem-langs-hook (c-mode-common-hook)
-    (local-set-key (kbd "M-/") 'semantic-complete-analyze-inline)
-    (local-set-key (kbd "M-,") 'pop-tag-mark)
-    (local-set-key (kbd "M-.") 'c5-find-definition)))
-
-
+    (local-set-key (kbd "M-TAB") 'semantic-complete-analyze-inline)
+    (local-set-key (kbd "M-,") 'pop-tag-mark)))
 
 ;;; Languages.
 (c5-defhook c5-all-langs-hook (c-mode-common-hook
@@ -94,6 +93,11 @@
 ;; C/C++/Java/etc.
 ;; Treat .h files as c++.
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+
+(c5-defhook c5-c-common-hook (c-mode-common-hook)
+  (local-set-key (kbd "M-n") 'flymake-goto-next-error)
+  (local-set-key (kbd "M-p") 'flymake-goto-prev-error)
+  (local-set-key (kbd "C-c e") 'c5-flymake-show-error))
 
 ;; elisp.
 (c5-defhook c5-elisp-common-hook (lisp-interaction-mode-hook
@@ -148,3 +152,4 @@
 (global-set-key (kbd "C-9") 'kmacro-start-macro)
 (global-set-key (kbd "C-0") 'kmacro-end-macro)
 (global-set-key (kbd "M-o c") 'facemenu-set-foreground)
+

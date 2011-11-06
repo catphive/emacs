@@ -78,8 +78,7 @@
                 'semantic-displayor-ghost)
   ;; add some keybindings to languages that support semantic.
   (c5-defhook c5-sem-langs-hook (c-mode-common-hook)
-    (local-set-key (kbd "M-TAB") 'semantic-complete-analyze-inline)
-    (local-set-key (kbd "M-,") 'pop-tag-mark)))
+    (local-set-key (kbd "M-TAB") 'semantic-complete-analyze-inline)))
 
 ;;; Languages.
 (c5-defhook c5-all-langs-hook (c-mode-common-hook
@@ -88,7 +87,8 @@
                                python-mode-hook)
   ;; Emacs 21 doesn't have linum-mode.
   (c5-try-enable 'linum-mode)
-  (hs-minor-mode 1))
+  (hs-minor-mode 1)
+  (local-set-key (kbd "M-,") 'pop-tag-mark))
 
 ;; C/C++/Java/etc.
 ;; Treat .h files as c++.
@@ -96,15 +96,15 @@
 
 (c5-defhook c5-c-common-hook (c-mode-common-hook)
   (local-set-key (kbd "M-n") 'flymake-goto-next-error)
-  (local-set-key (kbd "M-p") 'flymake-goto-prev-error)
-  (local-set-key (kbd "C-c e") 'c5-flymake-show-error))
+  (local-set-key (kbd "M-p") 'flymake-goto-prev-error))
 
 ;; elisp.
 (c5-defhook c5-elisp-common-hook (lisp-interaction-mode-hook
                                   emacs-lisp-mode-hook)
   (local-set-key (kbd "C-c <RET>") 'c5-macroexpand-point)
   (local-set-key (kbd "M-/") 'lisp-complete-symbol)
-  (eldoc-mode 1))
+  (local-set-key (kbd "M-.") 'c5-elisp-find-definition)
+  (eldoc-mode))
 
 ;; general lisp
 (c5-defhook c5-elisp-common-hook (lisp-mode-hook
@@ -119,7 +119,8 @@
 ;; elpa
 (require 'package)
 (setq-default package-user-dir (expand-file-name "~/Dropbox/emacs_packages"))
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives
+             '("marmalade" . "http://marmalade-repo.org/packages/"))
 
 ;; haskell mode.
 (when (fboundp 'haskell-mode)

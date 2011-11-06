@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t -*-
 (setq byte-compile-warnings '(not cl-functions))
 (require 'cl)
 
@@ -20,6 +21,7 @@ Inserts string at point."
   (minibuffer-with-setup-hook (lambda () (kbd-macro-query t))
     (insert (read-from-minibuffer "input: "))))
 
+;; semantic based find-definition.
 ;; etags must be loaded so we can use related tag rings for history.
 (require 'etags)
 (defun c5-find-definition (arg)
@@ -43,16 +45,64 @@ Inserts string at point."
   "Enable a mode if the mode function is bound."
   (when (fboundp mode-sym) (funcall mode-sym 1)))
 
-;; flymake utils.
-(defun c5-flymake-format-err (err)
-  (format "%s:%d:1:%s " (aref err 5) (aref err 2) (aref err 4)))
+;; Make flymake show eldoc style error messages.
+(require 'eldoc)
+(defun c5-flymake-ler-at-point ()
+  (caar (flymake-find-err-info flymake-err-info (line-number-at-pos))))
 
-(defun c5-flymake-show-error ()
-  (interactive)
-  (let* ((line-no (line-number-at-pos))
-        (errs (find-if (lambda (some-errs) (eq (car some-errs) line-no)) flymake-err-info)))
-    (with-output-to-temp-buffer "*c5-flymake-errors*"
-      (dolist (err (second errs))
-        (princ (c5-flymake-format-err err))))))
+(defun c5-flymake-show-ler (ler)
+  (when ler
+    ;; Don't log message.
+    (let ((message-log-max nil)) 
+      (message (flymake-ler-text ler)))))
+
+(let ((timer nil)
+      (ler nil))
+ (defun c5-flymake-post-command-action ()
+   (when timer
+     (cancel-timer timer)
+     (setq timer nil))
+   (setq ler (c5-flymake-ler-at-point))
+   (when ler
+     (setq timer (run-at-time "0.9 sec" nil
+                              (lambda ()
+                                (when (let ((eldoc-mode t))
+                                        (eldoc-display-message-p))
+                                  (c5-flymake-show-ler ler)))))))
+
+ (defun c5-flymake-pre-command-action ()
+   (when (let ((eldoc-mode t)) (eldoc-display-message-no-interference-p))
+     (c5-flymake-show-ler ler))))
+
+(defadvice flymake-mode (before c5-flymake-post-command activate compile)
+  (add-hook 'post-command-hook 'c5-flymake-post-command-action nil t)
+  (add-hook 'pre-command-hook 'c5-flymake-pre-command-action nil t))
+
+;; elisp navigation.
+(defun c5-elisp-find-definition (name)
+  "Jump to the definition of the function (or variable) at point."
+  (interactive (list (thing-at-point 'symbol)))
+  (cond (name
+         (let ((symbol (intern-soft name))
+               (search (lambda (fun sym)
+                         (let* ((r (save-excursion (funcall fun sym)))
+                                (buffer (car r))
+                                (point (cdr r)))
+                           (cond ((not point)
+                                  (error "Found no definition for %s in %s"
+                                         name buffer))
+                                 (t
+                                  (switch-to-buffer buffer)
+                                  (goto-char point)
+                                  (recenter 1)))))))
+           (cond ((fboundp symbol)
+                  (ring-insert find-tag-marker-ring (point-marker))
+                  (funcall search 'find-function-noselect symbol))
+                 ((boundp symbol)
+                  (ring-insert find-tag-marker-ring (point-marker))
+                  (funcall search 'find-variable-noselect symbol))
+                 (t
+                  (message "Symbol not bound: %S" symbol)))))
+  (t (message "No symbol at point"))))
 
 (provide 'c5-util)

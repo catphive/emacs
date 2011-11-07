@@ -80,15 +80,25 @@
   (c5-defhook c5-sem-langs-hook (c-mode-common-hook)
     (local-set-key (kbd "M-TAB") 'semantic-complete-analyze-inline)))
 
-;;; Languages.
-(c5-defhook c5-all-langs-hook (c-mode-common-hook
-                               lisp-interaction-mode-hook
-                               emacs-lisp-mode-hook
-                               python-mode-hook)
+
+;;; Programming languages.
+(c5-defhook c5-all-langs-hook (prog-mode-hook)
   ;; Emacs 21 doesn't have linum-mode.
   (c5-try-enable 'linum-mode)
   (hs-minor-mode 1)
   (local-set-key (kbd "M-,") 'pop-tag-mark))
+
+;; Lisp.
+(c5-defhook c5-lisp-common-hook (lisp-mode-hook
+                                 emacs-lisp-mode-hook)
+  (c5-try-enable 'paredit-mode))
+
+;; elisp.
+(c5-defhook c5-emacs-lisp-common-hook (emacs-lisp-mode-hook)
+  (local-set-key (kbd "C-c <RET>") 'c5-macroexpand-point)
+  (local-set-key (kbd "M-/") 'lisp-complete-symbol)
+  (local-set-key (kbd "M-.") 'c5-elisp-find-definition)
+  (eldoc-mode 1))
 
 ;; C/C++/Java/etc.
 ;; Treat .h files as c++.
@@ -97,20 +107,6 @@
 (c5-defhook c5-c-common-hook (c-mode-common-hook)
   (local-set-key (kbd "M-n") 'flymake-goto-next-error)
   (local-set-key (kbd "M-p") 'flymake-goto-prev-error))
-
-;; elisp.
-(c5-defhook c5-elisp-common-hook (lisp-interaction-mode-hook
-                                  emacs-lisp-mode-hook)
-  (local-set-key (kbd "C-c <RET>") 'c5-macroexpand-point)
-  (local-set-key (kbd "M-/") 'lisp-complete-symbol)
-  (local-set-key (kbd "M-.") 'c5-elisp-find-definition)
-  (eldoc-mode))
-
-;; general lisp
-(c5-defhook c5-elisp-common-hook (lisp-mode-hook
-                                  lisp-interaction-mode-hook
-                                  emacs-lisp-mode-hook)
-  (c5-try-enable 'paredit-mode))
 
 ;; Third party modes.
 ;; Failure to find third party code should not break emacs config.
@@ -153,4 +149,3 @@
 (global-set-key (kbd "C-9") 'kmacro-start-macro)
 (global-set-key (kbd "C-0") 'kmacro-end-macro)
 (global-set-key (kbd "M-o c") 'facemenu-set-foreground)
-

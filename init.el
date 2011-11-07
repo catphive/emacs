@@ -137,7 +137,9 @@
 (add-to-list 'auto-mode-alist '("\\.m\\'" . octave-mode))
 
 ;; python.
-(load "/usr/share/emacs/site-lisp/pymacs" t)
+
+(load "/usr/share/emacs/site-lisp/pymacs" t) ;arch
+(load "/usr/share/emacs/site-lisp/pymacs/pymacs" t) ;ubuntu
 (when (fboundp 'pymacs-load)
   (pymacs-load "ropemacs" "rope-" t))
 

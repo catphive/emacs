@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t -*-
 ;; Load own code.
 (add-to-list 'load-path "~/.emacs.d")
 (require 'c5-util)
@@ -106,7 +107,8 @@
 
 (c5-defhook c5-c-common-hook (c-mode-common-hook)
   (local-set-key (kbd "M-n") 'flymake-goto-next-error)
-  (local-set-key (kbd "M-p") 'flymake-goto-prev-error))
+  (local-set-key (kbd "M-p") 'flymake-goto-prev-error)
+  (local-set-key (kbd "C-c C-k") (lambda () (interactive) (compile "make"))))
 
 ;; Third party modes.
 ;; Failure to find third party code should not break emacs config.

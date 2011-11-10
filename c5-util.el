@@ -21,6 +21,10 @@ Inserts string at point."
   (minibuffer-with-setup-hook (lambda () (kbd-macro-query t))
     (insert (read-from-minibuffer "input: "))))
 
+(defun c5-eval-to-kill-ring ()
+  (interactive)
+  (kill-new (with-output-to-string (princ (call-interactively 'eval-expression)))))
+
 ;; semantic based find-definition.
 ;; etags must be loaded so we can use related tag rings for history.
 (require 'etags)

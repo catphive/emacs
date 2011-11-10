@@ -68,6 +68,9 @@
 ;; ediff.
 (setq-default ediff-window-setup-function 'ediff-setup-windows-plain)
 
+;; visual bookmarks (bm)
+(setq-default bm-highlight-style 'bm-highlight-only-fringe)
+
 ;; Semantic.
 ;; Only use semantic if defined.
 (when (fboundp 'semantic-mode)
@@ -150,6 +153,11 @@
 (global-set-key (kbd "C-c g") 'revert-buffer)
 (global-set-key (kbd "C-c i") 'imenu)
 (global-set-key (kbd "C-c h") 'hs-toggle-hiding)
+(global-set-key (kbd "C-c m") 'bm-toggle)
+(global-set-key (kbd "C-c p") 'bm-previous)
+(global-set-key (kbd "C-c n") 'bm-next)
 (global-set-key (kbd "C-9") 'kmacro-start-macro)
 (global-set-key (kbd "C-0") 'kmacro-end-macro)
 (global-set-key (kbd "M-o c") 'facemenu-set-foreground)
+(global-set-key (kbd "C-;") 'c5-eval-to-kill-ring)
+(global-set-key (kbd "M-Y") (lambda () (interactive) (yank-pop -1)))

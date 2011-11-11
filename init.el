@@ -161,3 +161,15 @@
 (global-set-key (kbd "M-o c") 'facemenu-set-foreground)
 (global-set-key (kbd "C-;") 'c5-eval-to-kill-ring)
 (global-set-key (kbd "M-Y") (lambda () (interactive) (yank-pop -1)))
+(require 'windmove)
+(global-set-key (kbd "C-c w p") 'windmove-up)
+(global-set-key (kbd "C-c w n") 'windmove-down)
+(global-set-key (kbd "C-c w b") 'windmove-left)
+(global-set-key (kbd "C-c w f") 'windmove-right)
+(require 'buffer-move nil t)
+(global-set-key (kbd "C-c b p") 'buf-move-up)
+(global-set-key (kbd "C-c b n") 'buf-move-down)
+(global-set-key (kbd "C-c b f") 'buf-move-right)
+(global-set-key (kbd "C-c b b") 'buf-move-left)
+
+

@@ -19,6 +19,7 @@
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
+(setq-default truncate-lines t)
 
 ;; Make fringe show buffer boundaries.
 (setq-default indicate-empty-lines t
@@ -68,9 +69,6 @@
 ;; ediff.
 (setq-default ediff-window-setup-function 'ediff-setup-windows-plain)
 
-;; visual bookmarks (bm)
-(setq-default bm-highlight-style 'bm-highlight-only-fringe)
-
 ;; Semantic.
 ;; Only use semantic if defined.
 (when (fboundp 'semantic-mode)
@@ -100,15 +98,18 @@
 ;; elisp.
 (c5-defhook c5-emacs-lisp-common-hook (emacs-lisp-mode-hook)
   (local-set-key (kbd "C-c <RET>") 'c5-macroexpand-point)
-  (local-set-key (kbd "M-/") 'lisp-complete-symbol)
   (local-set-key (kbd "M-.") 'c5-elisp-find-definition)
   (eldoc-mode 1))
 
 ;; C/C++/Java/etc.
+
 ;; Treat .h files as c++.
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 
 (c5-defhook c5-c-common-hook (c-mode-common-hook)
+  (add-to-list 'c-default-style '(c++-mode . "linux"))
+  (add-to-list 'c-default-style '(c-mode . "linux"))
+  (setq c-basic-offset 4)
   (local-set-key (kbd "M-n") 'flymake-goto-next-error)
   (local-set-key (kbd "M-p") 'flymake-goto-prev-error)
   (local-set-key (kbd "C-c C-k") (lambda () (interactive) (compile "make"))))
@@ -116,11 +117,20 @@
 ;; Third party modes.
 ;; Failure to find third party code should not break emacs config.
 (add-to-list 'load-path "~/Dropbox/emacs")
+(add-to-list 'load-path "~/Dropbox/emacs/emacs-utils/win-switch")
+
+
+(require 'win-switch)
+(win-switch-setup-keys-ijkl "\C-xo")
+
+(add-to-list 'load-path "~/Dropbox/emacs/emacs-color-theme-solarized")
+(add-to-list 'custom-theme-load-path "~/Dropbox/emacs/emacs-color-theme-solarized")
 
 ;; elpa
 (require 'package)
 (setq-default package-user-dir (expand-file-name "~/Dropbox/emacs_packages"))
 (add-to-list 'package-archives
+             '("ELPA" . "http://tromey.com/elpa/")
              '("marmalade" . "http://marmalade-repo.org/packages/"))
 
 ;; haskell mode.
@@ -137,13 +147,6 @@
 
 ;; octave.
 (add-to-list 'auto-mode-alist '("\\.m\\'" . octave-mode))
-
-;; python.
-
-(load "/usr/share/emacs/site-lisp/pymacs" t) ;arch
-(load "/usr/share/emacs/site-lisp/pymacs/pymacs" t) ;ubuntu
-(when (fboundp 'pymacs-load)
-  (pymacs-load "ropemacs" "rope-" t))
 
 ;; Global Key Bindings.
 (global-set-key (kbd "C-c s") 'multi-occur-in-matching-buffers)
@@ -171,5 +174,4 @@
 (global-set-key (kbd "C-c b n") 'buf-move-down)
 (global-set-key (kbd "C-c b f") 'buf-move-right)
 (global-set-key (kbd "C-c b b") 'buf-move-left)
-
 

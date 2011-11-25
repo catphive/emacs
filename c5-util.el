@@ -62,25 +62,31 @@ Inserts string at point."
 
 (let ((timer nil)
       (ler nil))
- (defun c5-flymake-post-command-action ()
-   (when timer
-     (cancel-timer timer)
-     (setq timer nil))
-   (setq ler (c5-flymake-ler-at-point))
-   (when ler
-     (setq timer (run-at-time "0.9 sec" nil
-                              (lambda ()
-                                (when (let ((eldoc-mode t))
-                                        (eldoc-display-message-p))
-                                  (c5-flymake-show-ler ler)))))))
+ (defalias 'c5-flymake-post-command-action (lambda ()
+    (when timer
+      (cancel-timer timer)
+      (setq timer nil))
+    (setq ler (c5-flymake-ler-at-point))
+    (when ler
+      (setq timer (run-at-time "0.9 sec" nil
+                               (lambda ()
+                                 (when (let ((eldoc-mode t))
+                                         (eldoc-display-message-p))
+                                   (c5-flymake-show-ler ler))))))))
 
- (defun c5-flymake-pre-command-action ()
-   (when (let ((eldoc-mode t)) (eldoc-display-message-no-interference-p))
-     (c5-flymake-show-ler ler))))
+ (defalias 'c5-flymake-pre-command-action (lambda ()
+    (when (let ((eldoc-mode t)) (eldoc-display-message-no-interference-p))
+      (c5-flymake-show-ler ler)))))
 
 (defadvice flymake-mode (before c5-flymake-post-command activate compile)
   (add-hook 'post-command-hook 'c5-flymake-post-command-action nil t)
   (add-hook 'pre-command-hook 'c5-flymake-pre-command-action nil t))
+
+(defadvice flymake-goto-next-error (after display-message activate compile)
+  (c5-flymake-show-ler (c5-flymake-ler-at-point)))
+
+(defadvice flymake-goto-prev-error (after display-message activate compile)
+  (c5-flymake-show-ler (c5-flymake-ler-at-point)))
 
 ;; elisp navigation.
 (defun c5-elisp-find-definition (name)

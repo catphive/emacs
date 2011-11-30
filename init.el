@@ -1,7 +1,19 @@
 ;;; -*- lexical-binding: t -*-
+
 ;; Load own code.
 (add-to-list 'load-path "~/.emacs.d")
 (require 'c5-util)
+
+;; cedet stuff has to come early since it overrides existing packages...
+(load-file "~/Dropbox/emacs/cedet/common/cedet.el")
+
+;; Enable EDE (Project Management) features
+(global-ede-mode 1)
+
+(semantic-load-enable-gaudy-code-helpers)
+
+(c5-defhook c5-sem-langs-hook (c-mode-common-hook)
+  (local-set-key (kbd "M-TAB") 'semantic-complete-analyze-inline))
 
 ;; Basic config.
 (setq-default indent-tabs-mode nil)
@@ -69,20 +81,6 @@
 ;; ediff.
 (setq-default ediff-window-setup-function 'ediff-setup-windows-plain)
 
-;; Semantic.
-;; Only use semantic if defined.
-(when (fboundp 'semantic-mode)
-  (setq semantic-default-submodes '(global-semantic-idle-scheduler-mode
-                                    global-semanticdb-minor-mode
-                                    global-semantic-stickyfunc-mode))
-  (semantic-mode 1)
-  (setq-default semantic-complete-inline-analyzer-displayor-class
-                'semantic-displayor-ghost)
-  ;; add some keybindings to languages that support semantic.
-  (c5-defhook c5-sem-langs-hook (c-mode-common-hook)
-    (local-set-key (kbd "M-TAB") 'semantic-complete-analyze-inline)))
-
-
 ;;; Programming languages.
 (c5-defhook c5-all-langs-hook (prog-mode-hook)
   ;; Emacs 21 doesn't have linum-mode.
@@ -149,6 +147,7 @@
 (add-to-list 'auto-mode-alist '("\\.m\\'" . octave-mode))
 
 ;; Global Key Bindings.
+(global-set-key "\M- " 'hippie-expand)
 (global-set-key (kbd "C-c s") 'multi-occur-in-matching-buffers)
 (global-set-key (kbd "C-c o") 'ff-find-other-file)
 (global-set-key (kbd "C-c j") 'goto-line)

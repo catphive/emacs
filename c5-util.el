@@ -45,6 +45,13 @@ Inserts string at point."
       (goto-char pos)
       (ring-insert tags-location-ring (point-marker))))
 
+(defun c5-alt-find-definition ()
+  (interactive)
+  (let ((jump-src-marker (point-marker)))
+    (semantic-ia-fast-jump (point))
+    (ring-insert find-tag-marker-ring jump-src-marker)
+    (ring-insert tags-location-ring (point-marker))))
+
 (defun c5-try-enable (mode-sym)
   "Enable a mode if the mode function is bound."
   (when (fboundp mode-sym) (funcall mode-sym 1)))

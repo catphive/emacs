@@ -12,7 +12,10 @@
 
 (semantic-load-enable-gaudy-code-helpers)
 
+(require 'semantic-gcc)
+
 (c5-defhook c5-sem-langs-hook (c-mode-common-hook)
+  (local-set-key (kbd "M-.") 'c5-alt-find-definition)
   (local-set-key (kbd "M-TAB") 'semantic-complete-analyze-inline))
 
 ;; Basic config.

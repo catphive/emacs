@@ -64,6 +64,27 @@
 (fset 'yes-or-no-p 'y-or-n-p)
 
 ;;; Modes.
+
+;; Info-mode.
+;; Make git based emacs and cedet info paths work together.
+;; really hacky...
+(require 'info)
+(info-initialize)
+(let ((emacs-info-path (car Info-directory-list)))
+  (when (search "emacs/info" emacs-info-path)
+    (setq Info-directory-list
+          (loop
+           with found = nil
+           for list on Info-directory-list nconc
+           (if (and (not found)
+                    (second list)
+                    (not (search "cedet" (second list))))
+               (progn
+                 (setq found t)
+                 (list (car list) emacs-info-path))
+             (list (car list)))))
+    (pop Info-directory-list)))
+
 ;; ff-find-other-file config
 (setq-default ff-search-directories
               '("." "../Include" "../Src" "../Source" "../include" "../src"

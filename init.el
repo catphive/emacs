@@ -151,6 +151,8 @@
 
 ;; Global Key Bindings.
 (global-set-key "\M- " 'hippie-expand)
+(require 'data-debug)
+(global-set-key "\M-:" 'data-debug-eval-expression)
 (global-set-key (kbd "C-c s") 'multi-occur-in-matching-buffers)
 (global-set-key (kbd "C-c o") 'ff-find-other-file)
 (global-set-key (kbd "C-c j") 'goto-line)

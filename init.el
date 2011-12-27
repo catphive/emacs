@@ -15,8 +15,16 @@
 (require 'semantic-gcc)
 
 (c5-defhook c5-sem-langs-hook (c-mode-common-hook)
-  (local-set-key (kbd "M-.") 'c5-alt-find-definition)
+  (local-set-key (kbd "M-,") 'semantic-ia-fast-jump)
   (local-set-key (kbd "M-TAB") 'semantic-complete-analyze-inline))
+
+(let ((uri-dev11-base "/mnt/cel/view/brenmill-uri_dev11-cct-ccm/vob/ccm/TAGS"))
+  (when (file-exists-p uri-dev11-base)
+    (ede-cpp-root-project "uri_dev11" :file uri-dev11-base
+			  :include-path '("/Common/Include"
+					  "/Common/Include/CallManager"
+					  "/Projects/CTIManager/Include"
+					  "/Projects/CallManager/Include"))))
 
 ;; Basic config.
 (setq-default indent-tabs-mode nil)
@@ -35,6 +43,7 @@
 (put 'upcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
 (setq-default truncate-lines t)
+(put 'set-goal-column 'disabled nil)
 
 ;; Make fringe show buffer boundaries.
 (setq-default indicate-empty-lines t
@@ -64,6 +73,27 @@
 (fset 'yes-or-no-p 'y-or-n-p)
 
 ;;; Modes.
+
+;; Info-mode.
+;; Make git based emacs and cedet info paths work together.
+;; really hacky...
+(require 'info)
+(info-initialize)
+(let ((emacs-info-path (car Info-directory-list)))
+  (when (search "emacs/info" emacs-info-path)
+    (setq Info-directory-list
+          (loop
+           with found = nil
+           for list on Info-directory-list nconc
+           (if (and (not found)
+                    (second list)
+                    (not (search "cedet" (second list))))
+               (progn
+                 (setq found t)
+                 (list (car list) emacs-info-path))
+             (list (car list)))))
+    (pop Info-directory-list)))
+
 ;; ff-find-other-file config
 (setq-default ff-search-directories
               '("." "../Include" "../Src" "../Source" "../include" "../src"
@@ -178,4 +208,5 @@
 (global-set-key (kbd "C-c b n") 'buf-move-down)
 (global-set-key (kbd "C-c b f") 'buf-move-right)
 (global-set-key (kbd "C-c b b") 'buf-move-left)
+
 

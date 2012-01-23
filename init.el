@@ -14,7 +14,7 @@
 
 (require 'semantic-gcc)
 
-(c5-defhook c5-sem-langs-hook (c-mode-common-hook)
+(c5-defhook c5-sem-langs-hook (c-mode-common-hook python-mode-hook)
   (local-set-key (kbd "M-,") 'semantic-ia-fast-jump)
   (local-set-key (kbd "M-TAB") 'semantic-complete-analyze-inline))
 
@@ -106,7 +106,7 @@
 ;; browse-url.
 (setq-default browse-url-new-window-flag t)
 (setq browse-url-browser-function 'browse-url-generic
-      browse-url-generic-program "google-chrome")
+      browse-url-generic-program (c5-first-exe "google-chrome" "chromium" "firefox"))
 
 ;; woman.
 (setq-default woman-use-own-frame nil)
@@ -121,6 +121,11 @@
   (hs-minor-mode 1)
   (local-set-key (kbd "M-,") 'pop-tag-mark))
 
+;; LaTeX
+(load "auctex.el" t)
+(load "preview-latex.el" t)
+(setq TeX-parse-self t)
+
 ;; Lisp.
 (c5-defhook c5-lisp-common-hook (lisp-mode-hook
                                  emacs-lisp-mode-hook)
@@ -131,6 +136,10 @@
   (local-set-key (kbd "C-c <RET>") 'c5-macroexpand-point)
   (local-set-key (kbd "M-.") 'c5-elisp-find-definition)
   (eldoc-mode 1))
+
+;; Python.
+
+(setq-default python-remove-cwd-from-path nil)
 
 ;; C/C++/Java/etc.
 

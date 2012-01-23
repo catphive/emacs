@@ -122,4 +122,7 @@ Inserts string at point."
                   (message "Symbol not bound: %S" symbol)))))
   (t (message "No symbol at point"))))
 
+(defun c5-first-exe (&rest exes)
+  (find-if 'executable-find exes))
+
 (provide 'c5-util)

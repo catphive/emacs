@@ -5,26 +5,31 @@
 (require 'c5-util)
 
 ;; cedet stuff has to come early since it overrides existing packages...
-(load-file "~/Dropbox/emacs/cedet/common/cedet.el")
+(let ((cedet-path "~/Dropbox/emacs/cedet/common/cedet.el"))
+  (when (file-exists-p cedet-path)
+    (load-file cedet-path)
 
-;; Enable EDE (Project Management) features
-(global-ede-mode 1)
+    ;; Enable EDE (Project Management) features
+    (global-ede-mode 1)
 
-(semantic-load-enable-gaudy-code-helpers)
+    (semantic-load-enable-gaudy-code-helpers)
 
-(require 'semantic-gcc)
+    (require 'semantic-gcc)
 
-(c5-defhook c5-sem-langs-hook (c-mode-common-hook python-mode-hook)
-  (local-set-key (kbd "M-,") 'semantic-ia-fast-jump)
-  (local-set-key (kbd "M-TAB") 'semantic-complete-analyze-inline))
 
-(let ((uri-dev11-base "/mnt/cel/view/brenmill-uri_dev11-cct-ccm/vob/ccm/TAGS"))
-  (when (file-exists-p uri-dev11-base)
-    (ede-cpp-root-project "uri_dev11" :file uri-dev11-base
-			  :include-path '("/Common/Include"
-					  "/Common/Include/CallManager"
-					  "/Projects/CTIManager/Include"
-					  "/Projects/CallManager/Include"))))
+    (c5-defhook c5-sem-langs-hook (c-mode-common-hook python-mode-hook)
+		(local-set-key (kbd "M-,") 'semantic-ia-fast-jump)
+		(local-set-key (kbd "M-TAB") 'semantic-complete-analyze-inline))
+
+    (let ((uri-dev11-base "/mnt/cel/view/brenmill-uri_dev11-cct-ccm/vob/ccm/TAGS"))
+      (when (file-exists-p uri-dev11-base)
+	(ede-cpp-root-project "uri_dev11" :file uri-dev11-base
+			      :include-path '("/Common/Include"
+					      "/Common/Include/CallManager"
+					      "/Projects/CTIManager/Include"
+					      "/Projects/CallManager/Include"))))))
+
+
 
 ;; Basic config.
 (setq-default indent-tabs-mode nil)
@@ -159,19 +164,19 @@
 (add-to-list 'load-path "~/Dropbox/emacs")
 (add-to-list 'load-path "~/Dropbox/emacs/emacs-utils/win-switch")
 
-
-(require 'win-switch)
-(win-switch-setup-keys-ijkl "\C-xo")
+(if (require 'win-switch nil t)
+    (win-switch-setup-keys-ijkl "\C-xo"))
 
 (add-to-list 'load-path "~/Dropbox/emacs/emacs-color-theme-solarized")
-(add-to-list 'custom-theme-load-path "~/Dropbox/emacs/emacs-color-theme-solarized")
+(when (boundp 'custom-theme-load-path)
+  (add-to-list 'custom-theme-load-path "~/Dropbox/emacs/emacs-color-theme-solarized"))
 
 ;; elpa
-(require 'package)
-(setq-default package-user-dir (expand-file-name "~/Dropbox/emacs_packages"))
-(add-to-list 'package-archives
-             '("ELPA" . "http://tromey.com/elpa/")
-             '("marmalade" . "http://marmalade-repo.org/packages/"))
+(when (require 'package nil t)
+  (setq-default package-user-dir (expand-file-name "~/Dropbox/emacs_packages"))
+  (add-to-list 'package-archives
+	       '("ELPA" . "http://tromey.com/elpa/")
+	       '("marmalade" . "http://marmalade-repo.org/packages/")))
 
 ;; haskell mode.
 (when (fboundp 'haskell-mode)
@@ -190,8 +195,8 @@
 
 ;; Global Key Bindings.
 (global-set-key "\M- " 'hippie-expand)
-(require 'data-debug)
-(global-set-key "\M-:" 'data-debug-eval-expression)
+(when (require 'data-debug nil t)
+  (global-set-key "\M-:" 'data-debug-eval-expression))
 (global-set-key (kbd "C-c s") 'multi-occur-in-matching-buffers)
 (global-set-key (kbd "C-c o") 'ff-find-other-file)
 (global-set-key (kbd "C-c j") 'goto-line)

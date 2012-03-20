@@ -119,6 +119,17 @@
 ;; ediff.
 (setq-default ediff-window-setup-function 'ediff-setup-windows-plain)
 
+;; jka-cmpr
+;; read partially written gzip file with .gzo extension.
+(auto-compression-mode 0)
+(add-to-list 'jka-compr-compression-info-list
+             ["\\.gzo\\'"
+              "compressing"        "gzip"         ("-c" "-q")
+              "uncompressing"      "gzip"         ("-c" "-q" "-d" "-S .gzo")
+              t t "\037\213"])
+(add-to-list 'jka-compr-load-suffixes ".gzo")
+(auto-compression-mode 1)
+
 ;;; Programming languages.
 (c5-defhook c5-all-langs-hook (prog-mode-hook)
   ;; Emacs 21 doesn't have linum-mode.
@@ -127,9 +138,12 @@
   (local-set-key (kbd "M-,") 'pop-tag-mark))
 
 ;; LaTeX
-(load "auctex.el" t)
-(load "preview-latex.el" t)
+(add-to-list 'load-path "~/Dropbox/emacs/auctex")
+(load "auctex.el")
+(add-to-list 'load-path "~/Dropbox/emacs/auctex/preview")
+(load "preview-latex.el")
 (setq TeX-parse-self t)
+(setq TeX-PDF-mode t)
 
 ;; Lisp.
 (c5-defhook c5-lisp-common-hook (lisp-mode-hook

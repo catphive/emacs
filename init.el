@@ -160,6 +160,11 @@
 
 (setq-default python-remove-cwd-from-path nil)
 
+;; Javascript
+(add-to-list 'load-path "~/Dropbox/emacs/js2-mode")
+(autoload 'js2-mode "js2-mode" nil t)
+(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+
 ;; C/C++/Java/etc.
 
 ;; Treat .h files as c++.

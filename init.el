@@ -190,6 +190,9 @@
 (when (boundp 'custom-theme-load-path)
   (add-to-list 'custom-theme-load-path "~/Dropbox/emacs/emacs-color-theme-solarized"))
 
+;; graphviz
+(setq-default graphviz-dot-auto-indent-on-semi nil)
+
 ;; elpa
 (when (require 'package nil t)
   (setq-default package-user-dir (expand-file-name "~/Dropbox/emacs_packages"))

@@ -1,0 +1,8 @@
+*.cache
+*~
+tramp
+url/cookies
+server/server
+elpa/*
+session.*
+ede-projects.el

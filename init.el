@@ -4,33 +4,6 @@
 (add-to-list 'load-path "~/.emacs.d")
 (require 'c5-util)
 
-;; cedet stuff has to come early since it overrides existing packages...
-(let ((cedet-path "~/Dropbox/emacs/cedet/common/cedet.el"))
-  (when (file-exists-p cedet-path)
-    (load-file cedet-path)
-
-    ;; Enable EDE (Project Management) features
-    (global-ede-mode 1)
-
-    (semantic-load-enable-gaudy-code-helpers)
-
-    (require 'semantic-gcc)
-
-
-    (c5-defhook c5-sem-langs-hook (c-mode-common-hook python-mode-hook)
-		(local-set-key (kbd "M-,") 'semantic-ia-fast-jump)
-		(local-set-key (kbd "M-TAB") 'semantic-complete-analyze-inline))
-
-    (let ((uri-dev11-base "/mnt/cel/view/brenmill-uri_dev11-cct-ccm/vob/ccm/TAGS"))
-      (when (file-exists-p uri-dev11-base)
-	(ede-cpp-root-project "uri_dev11" :file uri-dev11-base
-			      :include-path '("/Common/Include"
-					      "/Common/Include/CallManager"
-					      "/Projects/CTIManager/Include"
-					      "/Projects/CallManager/Include"))))))
-
-
-
 ;; Basic config.
 (setq-default indent-tabs-mode nil)
 (transient-mark-mode 1)
@@ -43,12 +16,12 @@
 (setq auto-save-default nil)
 (which-function-mode 1)
 (setq column-number-mode t)
-(c5-try-enable 'ido-mode) ; Built-in on emacs 22.
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
 (setq-default truncate-lines t)
 (put 'set-goal-column 'disabled nil)
+(setq-default show-trailing-whitespace t)
 
 ;; Make fringe show buffer boundaries.
 (setq-default indicate-empty-lines t
@@ -77,7 +50,30 @@
 ;; "y or n" instead of "yes or no"
 (fset 'yes-or-no-p 'y-or-n-p)
 
+;; rectangular selection
+(cua-selection-mode t)
+(setq cua-auto-tabify-rectangles nil)
+
 ;;; Modes.
+
+;; ido-mode
+(require 'ido nil t)
+(c5-try-enable 'ido-mode)
+(setq ido-everywhere t)
+(setq ido-use-filename-at-point 'guess)
+(setq ido-use-url-at-point 'guess)
+(setq ido-enable-flex-matching t)
+
+;; uniquify
+(require 'uniquify nil t)
+(setq uniquify-buffer-name-style 'reverse)
+(setq uniquify-separator "|")
+(setq uniquify-after-kill-buffer-p t)
+(setq uniquify-ignore-buffers-re "^\\*")
+
+;; ibuffer
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+(autoload 'ibuffer "ibuffer" "List buffers." t)
 
 ;; Info-mode.
 ;; Make git based emacs and cedet info paths work together.
@@ -98,6 +94,10 @@
                  (list (car list) emacs-info-path))
              (list (car list)))))
     (pop Info-directory-list)))
+
+(c5-defhook c5-info-mode-hook (Info-mode-hook)
+  (local-set-key (kbd "b") 'Info-history-back)
+  (local-set-key (kbd "f") 'Info-history-forward))
 
 ;; ff-find-other-file config
 (setq-default ff-search-directories
@@ -131,11 +131,6 @@
 (auto-compression-mode 1)
 
 ;;; Programming languages.
-(c5-defhook c5-all-langs-hook (prog-mode-hook)
-  ;; Emacs 21 doesn't have linum-mode.
-  (c5-try-enable 'linum-mode)
-  (hs-minor-mode 1)
-  (local-set-key (kbd "M-,") 'pop-tag-mark))
 
 ;; LaTeX
 (add-to-list 'load-path "~/Dropbox/emacs/auctex")
@@ -165,26 +160,48 @@
 (autoload 'js2-mode "js2-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 
+(c5-defhook c5-js2-mode-hook (js2-mode-hook)
+  (setq-default js2-global-externs
+                (list "jweb" "jQuery" "JSON" "setTimeout"
+                      "require" "__dirname" "module" "console" "define"))
+  (subword-mode 1)
+  (setq forward-sexp-function nil))
+
+;; node js repl
+(add-to-list 'load-path "~/Dropbox/emacs/nodejs-mode")
+(require 'nodejs-mode nil t)
+
+;; html
+(add-to-list 'auto-mode-alist '("\\.jqtpl$" . html-mode))
+
 ;; C/C++/Java/etc.
 
 ;; Treat .h files as c++.
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 
+(c-set-offset 'innamespace 0)
+
 (c5-defhook c5-c-common-hook (c-mode-common-hook)
   (add-to-list 'c-default-style '(c++-mode . "linux"))
   (add-to-list 'c-default-style '(c-mode . "linux"))
   (setq c-basic-offset 4)
+
   (local-set-key (kbd "M-n") 'flymake-goto-next-error)
-  (local-set-key (kbd "M-p") 'flymake-goto-prev-error)
+  (local-set-key (kbd "M-p") 'flymake-goto-prev-error))
+
+(c5-defhook c5-c-and-make-hook (c-mode-common-hook makefile-mode-hook)
+  (local-set-key (kbd "C-c C-r") 'recompile)
   (local-set-key (kbd "C-c C-k") (lambda () (interactive) (compile "make"))))
 
 ;; Third party modes.
 ;; Failure to find third party code should not break emacs config.
 (add-to-list 'load-path "~/Dropbox/emacs")
-(add-to-list 'load-path "~/Dropbox/emacs/emacs-utils/win-switch")
+(add-to-list 'load-path "~/Dropbox/emacs/less-css-mode")
+(require 'less-css-mode nil t)
 
-(if (require 'win-switch nil t)
-    (win-switch-setup-keys-ijkl "\C-xo"))
+(add-to-list 'load-path "~/Dropbox/emacs/magit-1.2.0")
+(require 'rebase-mode nil t)
+(require 'magit nil t)
 
 (add-to-list 'load-path "~/Dropbox/emacs/emacs-color-theme-solarized")
 (when (boundp 'custom-theme-load-path)
@@ -192,6 +209,13 @@
 
 ;; graphviz
 (setq-default graphviz-dot-auto-indent-on-semi nil)
+(load "graphviz-dot-mode.el" t)
+
+;; markdown
+(autoload 'markdown-mode "markdown-mode.el"
+  "Major mode for editing Markdown files" t)
+(add-to-list 'auto-mode-alist '("\\.text" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.md" . markdown-mode))
 
 ;; elpa
 (when (require 'package nil t)
@@ -215,7 +239,25 @@
 ;; octave.
 (add-to-list 'auto-mode-alist '("\\.m\\'" . octave-mode))
 
+;; hooks for all programming languages
+(c5-defhook c5-all-langs-hook (prog-mode-hook js2-mode-hook)
+  ;; Emacs 21 doesn't have linum-mode.
+  (c5-try-enable 'linum-mode)
+  (hs-minor-mode 1)
+  (local-set-key (kbd "M-,") 'pop-tag-mark))
+
+(add-to-list 'load-path
+              "~/.emacs.d/plugins/yasnippet")
+(require 'yasnippet)
+(yas/global-mode 1)
+
 ;; Global Key Bindings.
+
+(defun c5-back-other-window ()
+  (interactive)
+  (other-window -1))
+
+(global-set-key (kbd "C-x C-o") 'c5-back-other-window)
 (global-set-key "\M- " 'hippie-expand)
 (when (require 'data-debug nil t)
   (global-set-key "\M-:" 'data-debug-eval-expression))
@@ -229,6 +271,7 @@
 (global-set-key (kbd "C-c m") 'bm-toggle)
 (global-set-key (kbd "C-c p") 'bm-previous)
 (global-set-key (kbd "C-c n") 'bm-next)
+(global-set-key (kbd "C-c v") 'magit-status)
 (global-set-key (kbd "C-9") 'kmacro-start-macro)
 (global-set-key (kbd "C-0") 'kmacro-end-macro)
 (global-set-key (kbd "M-o c") 'facemenu-set-foreground)

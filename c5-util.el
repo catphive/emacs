@@ -64,7 +64,7 @@ Inserts string at point."
 (defun c5-flymake-show-ler (ler)
   (when ler
     ;; Don't log message.
-    (let ((message-log-max nil)) 
+    (let ((message-log-max nil))
       (message (flymake-ler-text ler)))))
 
 (let ((timer nil)

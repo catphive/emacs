@@ -1,5 +1,3 @@
-;;; -*- lexical-binding: t -*-
-
 ;; Load own code.
 (add-to-list 'load-path "~/.emacs.d")
 (require 'c5-util)
@@ -163,7 +161,8 @@
 (c5-defhook c5-js2-mode-hook (js2-mode-hook)
   (setq-default js2-global-externs
                 (list "jweb" "jQuery" "JSON" "setTimeout"
-                      "require" "__dirname" "module" "console" "define"))
+                      "require" "__dirname" "module" "console" "define"
+                      "process"))
   (subword-mode 1)
   (setq forward-sexp-function nil))
 
@@ -261,7 +260,7 @@
 (global-set-key "\M- " 'hippie-expand)
 (when (require 'data-debug nil t)
   (global-set-key "\M-:" 'data-debug-eval-expression))
-(global-set-key (kbd "C-c s") 'multi-occur-in-matching-buffers)
+(global-set-key (kbd "C-c s") 'multi-occur-in-this-mode)
 (global-set-key (kbd "C-c o") 'ff-find-other-file)
 (global-set-key (kbd "C-c j") 'goto-line)
 (global-set-key (kbd "C-c t") 'toggle-truncate-lines)
@@ -287,5 +286,3 @@
 (global-set-key (kbd "C-c b n") 'buf-move-down)
 (global-set-key (kbd "C-c b f") 'buf-move-right)
 (global-set-key (kbd "C-c b b") 'buf-move-left)
-
-

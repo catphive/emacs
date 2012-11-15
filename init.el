@@ -162,7 +162,7 @@
   (setq-default js2-global-externs
                 (list "jweb" "jQuery" "JSON" "setTimeout"
                       "require" "__dirname" "module" "console" "define"
-                      "process"))
+                      "process" "FileReader"))
   (subword-mode 1)
   (setq forward-sexp-function nil))
 
@@ -220,7 +220,8 @@
 (when (require 'package nil t)
   (setq-default package-user-dir (expand-file-name "~/Dropbox/emacs_packages"))
   (add-to-list 'package-archives
-	       '("ELPA" . "http://tromey.com/elpa/")
+	       '("ELPA" . "http://tromey.com/elpa/"))
+  (add-to-list 'package-archives
 	       '("marmalade" . "http://marmalade-repo.org/packages/")))
 
 ;; haskell mode.

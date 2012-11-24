@@ -73,6 +73,12 @@
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (autoload 'ibuffer "ibuffer" "List buffers." t)
 
+;; compilation mode
+(require 'compile)
+(add-to-list 'compilation-error-regexp-alist 'jshint)
+(add-to-list 'compilation-error-regexp-alist-alist
+         '(jshint "^\\([^:\n]+\\)+: line \\([0-9]+\\), col \\([0-9]+\\)," 1 2 3))
+
 ;; Info-mode.
 ;; Make git based emacs and cedet info paths work together.
 ;; really hacky...
@@ -162,7 +168,7 @@
   (setq-default js2-global-externs
                 (list "jweb" "jQuery" "JSON" "setTimeout"
                       "require" "__dirname" "module" "console" "define"
-                      "process" "FileReader"))
+                      "process" "FileReader" "Buffer"))
   (subword-mode 1)
   (setq forward-sexp-function nil))
 

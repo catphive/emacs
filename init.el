@@ -77,7 +77,7 @@
 (require 'compile)
 (add-to-list 'compilation-error-regexp-alist 'jshint)
 (add-to-list 'compilation-error-regexp-alist-alist
-         '(jshint "^\\([^:\n]+\\)+: line \\([0-9]+\\), col \\([0-9]+\\)," 1 2 3))
+         '(jshint "^\\([a-zA-Z0-9/.]+\\)+: line \\([0-9]+\\), col \\([0-9]+\\)," 1 2 3))
 
 ;; Info-mode.
 ;; Make git based emacs and cedet info paths work together.
@@ -278,6 +278,7 @@
 (global-set-key (kbd "C-c p") 'bm-previous)
 (global-set-key (kbd "C-c n") 'bm-next)
 (global-set-key (kbd "C-c v") 'magit-status)
+(global-set-key (kbd "C-c r") 'recompile)
 (global-set-key (kbd "C-9") 'kmacro-start-macro)
 (global-set-key (kbd "C-0") 'kmacro-end-macro)
 (global-set-key (kbd "M-o c") 'facemenu-set-foreground)

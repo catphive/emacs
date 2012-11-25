@@ -19,6 +19,8 @@
 (put 'narrow-to-region 'disabled nil)
 (setq-default truncate-lines t)
 (put 'set-goal-column 'disabled nil)
+
+;; external modes
 (add-to-list 'load-path "~/.emacs.d/ext")
 
 ;; Make fringe show buffer boundaries.
@@ -171,6 +173,10 @@
                       "process" "FileReader" "Buffer"))
   (subword-mode 1)
   (setq forward-sexp-function nil))
+
+;; json-mode
+(require 'json-mode)
+(add-to-list 'auto-mode-alist '("\\.jshintrc\\'" . json-mode))
 
 ;; node js repl
 (add-to-list 'load-path "~/Dropbox/emacs/nodejs-mode")

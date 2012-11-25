@@ -168,7 +168,7 @@
 
 (c5-defhook c5-js2-mode-hook (js2-mode-hook)
   (setq-default js2-global-externs
-                (list "jweb" "jQuery" "JSON" "setTimeout"
+                (list "exports" "jweb" "jQuery" "JSON" "setTimeout"
                       "require" "__dirname" "module" "console" "define"
                       "process" "FileReader" "Buffer"))
   (subword-mode 1)

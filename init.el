@@ -19,7 +19,7 @@
 (put 'narrow-to-region 'disabled nil)
 (setq-default truncate-lines t)
 (put 'set-goal-column 'disabled nil)
-(setq-default show-trailing-whitespace t)
+(add-to-list 'load-path "~/.emacs.d/ext")
 
 ;; Make fringe show buffer boundaries.
 (setq-default indicate-empty-lines t
@@ -250,7 +250,8 @@
   ;; Emacs 21 doesn't have linum-mode.
   (c5-try-enable 'linum-mode)
   (hs-minor-mode 1)
-  (local-set-key (kbd "M-,") 'pop-tag-mark))
+  (local-set-key (kbd "M-,") 'pop-tag-mark)
+  (setq show-trailing-whitespace t))
 
 (add-to-list 'load-path
               "~/.emacs.d/plugins/yasnippet")

@@ -79,7 +79,7 @@
 (require 'compile)
 (add-to-list 'compilation-error-regexp-alist 'jshint)
 (add-to-list 'compilation-error-regexp-alist-alist
-         '(jshint "^\\([a-zA-Z0-9/.]+\\)+: line \\([0-9]+\\), col \\([0-9]+\\)," 1 2 3))
+         '(jshint "\\([a-zA-Z0-9/.]+\\): line \\([0-9]+\\), col \\([0-9]+\\)," 1 2 3))
 
 ;; Info-mode.
 ;; Make git based emacs and cedet info paths work together.

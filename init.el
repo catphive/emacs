@@ -259,11 +259,6 @@
   (local-set-key (kbd "M-,") 'pop-tag-mark)
   (setq show-trailing-whitespace t))
 
-(add-to-list 'load-path
-              "~/.emacs.d/plugins/yasnippet")
-(require 'yasnippet)
-(yas/global-mode 1)
-
 ;; Global Key Bindings.
 
 (defun c5-back-other-window ()

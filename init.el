@@ -28,9 +28,15 @@
               indicate-buffer-boundaries 'left)
 
 ;; font.
-(when (and (fboundp 'font-family-list)
-           (member "Inconsolata" (font-family-list)))
-  (set-face-attribute 'default nil :font "Inconsolata-12"))
+(defun load-fonts (font-list)
+  (when (fboundp 'font-family-list)
+    (let* ((font-family-list (font-family-list))
+          (font (find-if (lambda (font) (member font font-family-list))
+                         font-list)))
+      (when font
+        (set-face-attribute 'default nil :font (concat font "-14"))))))
+
+(load-fonts (list "Ubuntu Mono" "Inconsolata"))
 
 ;; clipboard.
 (unless (eq system-type 'darwin)

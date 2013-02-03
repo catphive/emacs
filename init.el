@@ -167,6 +167,23 @@
 
 (setq-default python-remove-cwd-from-path nil)
 
+;; Ruby
+
+(require 'rvm)
+(rvm-use-default)
+
+(autoload 'inf-ruby "inf-ruby" "Run an inferior Ruby process" t)
+(autoload 'inf-ruby-setup-keybindings "inf-ruby" "" t)
+(eval-after-load 'ruby-mode
+  '(add-hook 'ruby-mode-hook 'inf-ruby-setup-keybindings))
+
+(require 'yari)
+(defun ri-bind-key ()
+  (local-set-key (kbd "C-c d") 'yari))
+
+(add-hook 'ruby-mode-hook 'ri-bind-key)
+(add-hook 'inf-ruby-mode-hook 'ri-bind-key)
+
 ;; Javascript
 (add-to-list 'load-path "~/Dropbox/emacs/js2-mode")
 (autoload 'js2-mode "js2-mode" nil t)

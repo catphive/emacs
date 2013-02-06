@@ -34,7 +34,7 @@
           (font (find-if (lambda (font) (member font font-family-list))
                          font-list)))
       (when font
-        (set-face-attribute 'default nil :font (concat font "-14"))))))
+        (set-face-attribute 'default nil :font (concat font "-12"))))))
 
 (load-fonts (list "Ubuntu Mono" "Inconsolata"))
 

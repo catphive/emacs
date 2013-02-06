@@ -28,9 +28,15 @@
               indicate-buffer-boundaries 'left)
 
 ;; font.
-(when (and (fboundp 'font-family-list)
-           (member "Inconsolata" (font-family-list)))
-  (set-face-attribute 'default nil :font "Inconsolata-12"))
+(defun load-fonts (font-list)
+  (when (fboundp 'font-family-list)
+    (let* ((font-family-list (font-family-list))
+          (font (find-if (lambda (font) (member font font-family-list))
+                         font-list)))
+      (when font
+        (set-face-attribute 'default nil :font (concat font "-14"))))))
+
+(load-fonts (list "Ubuntu Mono" "Inconsolata"))
 
 ;; clipboard.
 (unless (eq system-type 'darwin)
@@ -157,6 +163,40 @@
   (local-set-key (kbd "M-.") 'c5-elisp-find-definition)
   (eldoc-mode 1))
 
+;; Ruby
+
+(require 'rvm)
+(rvm-use-default)
+
+(autoload 'inf-ruby "inf-ruby" "Run an inferior Ruby process" t)
+(autoload 'inf-ruby-setup-keybindings "inf-ruby" "" t)
+(eval-after-load 'ruby-mode
+  '(add-hook 'ruby-mode-hook 'inf-ruby-setup-keybindings))
+
+(require 'yari)
+(defun ri-bind-key ()
+  (local-set-key (kbd "C-c d") 'yari))
+
+(add-hook 'ruby-mode-hook 'ri-bind-key)
+(add-hook 'inf-ruby-mode-hook 'ri-bind-key)
+
+;; Python.
+(add-to-list 'load-path "~/.emacs.d/ext/emacs-deferred")
+(add-to-list 'load-path "~/.emacs.d/ext/auto-complete")
+(add-to-list 'load-path "~/.emacs.d/ext/popup-el")
+(add-to-list 'load-path "~/.emacs.d/ext/emacs-jedi")
+(setenv "PYTHONPATH" "/home/brenmill/wprojects/jabberweb/test/selenium/lib")
+(setq-default python-remove-cwd-from-path nil)
+(setq jedi:setup-keys t)
+(c5-defhook c5-python-mode-hook (python-mode-hook)
+  (require 'auto-complete-config)
+  (require 'jedi)
+  (jedi:setup)
+  (ac-config-default)
+  (auto-complete-mode)
+  (local-set-key (kbd "M-.") 'jedi:goto-definition)
+  (local-set-key (kbd "M-TAB") 'jedi:complete))
+
 ;; Javascript
 (add-to-list 'load-path "~/Dropbox/emacs/js2-mode")
 (autoload 'js2-mode "js2-mode" nil t)
@@ -233,23 +273,6 @@
 	       '("marmalade" . "http://marmalade-repo.org/packages/"))
   (add-to-list 'package-archives
                '("melpa" . "http://melpa.milkbox.net/packages/")))
-
-;; Python.
-(add-to-list 'load-path "~/.emacs.d/ext/emacs-deferred")
-(add-to-list 'load-path "~/.emacs.d/ext/auto-complete")
-(add-to-list 'load-path "~/.emacs.d/ext/popup-el")
-(add-to-list 'load-path "~/.emacs.d/ext/emacs-jedi")
-(setenv "PYTHONPATH" "/home/brenmill/wprojects/jabberweb/test/selenium/lib")
-(setq-default python-remove-cwd-from-path nil)
-(setq jedi:setup-keys t)
-(c5-defhook c5-python-mode-hook (python-mode-hook)
-  (require 'auto-complete-config)
-  (require 'jedi)
-  (jedi:setup)
-  (ac-config-default)
-  (auto-complete-mode)
-  (local-set-key (kbd "M-.") 'jedi:goto-definition)
-  (local-set-key (kbd "M-TAB") 'jedi:complete))
 
 ;; haskell mode.
 (when (fboundp 'haskell-mode)

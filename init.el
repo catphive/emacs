@@ -157,10 +157,6 @@
   (local-set-key (kbd "M-.") 'c5-elisp-find-definition)
   (eldoc-mode 1))
 
-;; Python.
-
-(setq-default python-remove-cwd-from-path nil)
-
 ;; Javascript
 (add-to-list 'load-path "~/Dropbox/emacs/js2-mode")
 (autoload 'js2-mode "js2-mode" nil t)
@@ -234,7 +230,26 @@
   (add-to-list 'package-archives
 	       '("ELPA" . "http://tromey.com/elpa/"))
   (add-to-list 'package-archives
-	       '("marmalade" . "http://marmalade-repo.org/packages/")))
+	       '("marmalade" . "http://marmalade-repo.org/packages/"))
+  (add-to-list 'package-archives
+               '("melpa" . "http://melpa.milkbox.net/packages/")))
+
+;; Python.
+(add-to-list 'load-path "~/.emacs.d/ext/emacs-deferred")
+(add-to-list 'load-path "~/.emacs.d/ext/auto-complete")
+(add-to-list 'load-path "~/.emacs.d/ext/popup-el")
+(add-to-list 'load-path "~/.emacs.d/ext/emacs-jedi")
+(setenv "PYTHONPATH" "/home/brenmill/wprojects/jabberweb/test/selenium/lib")
+(setq-default python-remove-cwd-from-path nil)
+(setq jedi:setup-keys t)
+(c5-defhook c5-python-mode-hook (python-mode-hook)
+  (require 'auto-complete-config)
+  (require 'jedi)
+  (jedi:setup)
+  (ac-config-default)
+  (auto-complete-mode)
+  (local-set-key (kbd "M-.") 'jedi:goto-definition)
+  (local-set-key (kbd "M-TAB") 'jedi:complete))
 
 ;; haskell mode.
 (when (fboundp 'haskell-mode)

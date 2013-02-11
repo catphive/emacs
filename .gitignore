@@ -7,3 +7,10 @@ elpa/*
 session.*
 ede-projects.el
 ac-comphist.dat
+*.jpg
+ext/nxhtml/etc/schema/FDA-2009-N-0392-0396.1.doc
+ext/nxhtml/etc/viper-tut/*
+ext/nxhtml/nxhtml/doc/*
+ext/nxhtml/nxhtml/html-toc/*
+ext/nxhtml/nxhtml/html-wtoc/*
+ext/nxhtml/tests/*

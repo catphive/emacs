@@ -14,3 +14,4 @@ ext/nxhtml/nxhtml/doc/*
 ext/nxhtml/nxhtml/html-toc/*
 ext/nxhtml/nxhtml/html-wtoc/*
 ext/nxhtml/tests/*
+*.elc

@@ -242,9 +242,24 @@
 
 ;; Third party modes.
 ;; Failure to find third party code should not break emacs config.
+
+;; css
 (add-to-list 'load-path "~/Dropbox/emacs")
 (add-to-list 'load-path "~/Dropbox/emacs/less-css-mode")
 (require 'less-css-mode nil t)
+
+;; scss
+(setq scss-compile-at-save nil)
+(autoload 'scss-mode "scss-mode")
+(add-to-list 'auto-mode-alist '("\\.scss\\'" . scss-mode))
+
+;;nxhtml
+(load "~/.emacs.d/ext/nxhtml/autostart.el")
+
+(setq
+ mumamo-chunk-coloring 'submode-colored
+ indent-region-mode t)
+(add-to-list 'auto-mode-alist '("\\.html\\.erb\\'" . eruby-html-mumamo-mode))
 
 (add-to-list 'load-path "~/Dropbox/emacs/magit-1.2.0")
 (require 'rebase-mode nil t)

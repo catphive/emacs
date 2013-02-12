@@ -197,19 +197,6 @@
   (local-set-key (kbd "M-.") 'jedi:goto-definition)
   (local-set-key (kbd "M-TAB") 'jedi:complete))
 
-;; Javascript
-(add-to-list 'load-path "~/Dropbox/emacs/js2-mode")
-(autoload 'js2-mode "js2-mode" nil t)
-(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
-
-(c5-defhook c5-js2-mode-hook (js2-mode-hook)
-  (setq-default js2-global-externs
-                (list "exports" "jweb" "jQuery" "JSON" "setTimeout"
-                      "require" "__dirname" "module" "console" "define"
-                      "process" "FileReader" "Buffer"))
-  (subword-mode 1)
-  (setq forward-sexp-function nil))
-
 ;; json-mode
 (require 'json-mode)
 (add-to-list 'auto-mode-alist '("\\.jshintrc\\'" . json-mode))
@@ -268,6 +255,23 @@
 (add-to-list 'load-path "~/Dropbox/emacs/emacs-color-theme-solarized")
 (when (boundp 'custom-theme-load-path)
   (add-to-list 'custom-theme-load-path "~/Dropbox/emacs/emacs-color-theme-solarized"))
+
+;; Javascript
+(add-to-list 'load-path "~/Dropbox/emacs/js2-mode")
+(autoload 'js2-mode "js2-mode" nil t)
+
+;; clean up javascript modes added by nxhtml.
+(setq auto-mode-alist (c5-assoc-remove "\\.js\\'" auto-mode-alist))
+(setq auto-mode-alist (c5-assoc-remove "\\.js$" auto-mode-alist))
+(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+
+(c5-defhook c5-js2-mode-hook (js2-mode-hook)
+  (setq-default js2-global-externs
+                (list "exports" "jweb" "jQuery" "JSON" "setTimeout"
+                      "require" "__dirname" "module" "console" "define"
+                      "process" "FileReader" "Buffer"))
+  (subword-mode 1)
+  (setq forward-sexp-function nil))
 
 ;; graphviz
 (setq-default graphviz-dot-auto-indent-on-semi nil)

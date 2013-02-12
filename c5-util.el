@@ -1,6 +1,9 @@
 (setq byte-compile-warnings '(not cl-functions))
 (require 'cl)
 
+(defun c5-assoc-remove (key alist)
+  (remove* key alist :test 'equal :key 'car))
+
 (defmacro* c5-defhook (hook-sym (&rest hooks) &body body)
   (declare (indent 2))
   `(progn (defun ,hook-sym () ,@body)

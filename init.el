@@ -241,11 +241,26 @@
 (add-to-list 'auto-mode-alist '("\\.scss\\'" . scss-mode))
 
 ;;nxhtml
+;; inhibit obsolete vars messages.
+(eval-after-load "bytecomp"
+  '(progn (add-to-list 'byte-compile-not-obsolete-vars
+                      'font-lock-beginning-of-syntax-function)
+         (add-to-list 'byte-compile-not-obsolete-vars
+                      'font-lock-syntactic-keywords)))
+;; tramp-compat.el clobbers this variable!
+(eval-after-load "tramp-compat"
+  '(progn (add-to-list 'byte-compile-not-obsolete-vars
+                       'font-lock-beginning-of-syntax-function)
+          (add-to-list 'byte-compile-not-obsolete-vars
+                       'font-lock-syntactic-keywords)))
+
 (load "~/.emacs.d/ext/nxhtml/autostart.el")
 
-(setq
- mumamo-chunk-coloring 'submode-colored
- indent-region-mode t)
+;; clear out nxhtml modes used on html...
+(setq auto-mode-alist (c5-assoc-remove "\\.html\\'" auto-mode-alist))
+(add-to-list 'auto-mode-alist '("\\.html$" . html-mumamo-mode))
+
+(setq indent-region-mode t)
 (add-to-list 'auto-mode-alist '("\\.html\\.erb\\'" . eruby-html-mumamo-mode))
 
 (add-to-list 'load-path "~/Dropbox/emacs/magit-1.2.0")
@@ -269,7 +284,8 @@
   (setq-default js2-global-externs
                 (list "exports" "jweb" "jQuery" "JSON" "setTimeout"
                       "require" "__dirname" "module" "console" "define"
-                      "process" "FileReader" "Buffer"))
+                      "process" "FileReader" "Buffer"
+                      "it" "describe" "expect"))
   (subword-mode 1)
   (setq forward-sexp-function nil))
 

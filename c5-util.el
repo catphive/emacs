@@ -1,5 +1,7 @@
 (setq byte-compile-warnings '(not cl-functions))
 (require 'cl)
+(require 'epc)
+(require 'auto-complete)
 
 (defun c5-assoc-remove (key alist)
   (remove* key alist :test 'equal :key 'car))
@@ -123,6 +125,16 @@ Inserts string at point."
                  (t
                   (message "Symbol not bound: %S" symbol)))))
   (t (message "No symbol at point"))))
+
+;; python navigation
+(defun c5-jedi:goto-definition (&optional other-window)
+  "Goto the definition of the object at point."
+  (interactive "P")
+  (lexical-let ((other-window other-window))
+    (deferred:nextc (jedi:call-deferred 'goto)
+      (lambda (reply)
+        (ring-insert find-tag-marker-ring (point-marker))
+        (jedi:goto-definition--callback reply other-window)))))
 
 (defun c5-first-exe (&rest exes)
   (find-if 'executable-find exes))

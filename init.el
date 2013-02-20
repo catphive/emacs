@@ -194,7 +194,7 @@
   (jedi:setup)
   (ac-config-default)
   (auto-complete-mode)
-  (local-set-key (kbd "M-.") 'jedi:goto-definition)
+  (local-set-key (kbd "M-.") 'c5-jedi:goto-definition)
   (local-set-key (kbd "M-TAB") 'jedi:complete))
 
 ;; json-mode
@@ -285,7 +285,8 @@
                 (list "exports" "jweb" "jQuery" "JSON" "setTimeout"
                       "require" "__dirname" "module" "console" "define"
                       "process" "FileReader" "Buffer"
-                      "it" "describe" "expect"))
+                      "it" "describe" "expect" "beforeEach" "afterEach"
+                      "jasmine" "spyOn"))
   (subword-mode 1)
   (setq forward-sexp-function nil))
 

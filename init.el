@@ -1,5 +1,18 @@
 ;; Load own code.
 (add-to-list 'load-path "~/.emacs.d")
+;; external modes
+(add-to-list 'load-path "~/.emacs.d/ext")
+(add-to-list 'load-path "~/Dropbox/emacs/auctex")
+(add-to-list 'load-path "~/Dropbox/emacs/auctex/preview")
+(add-to-list 'load-path "~/.emacs.d/ext/emacs-deferred")
+(add-to-list 'load-path "~/.emacs.d/ext/auto-complete")
+(add-to-list 'load-path "~/.emacs.d/ext/popup-el")
+(add-to-list 'load-path "~/.emacs.d/ext/emacs-jedi")
+(add-to-list 'load-path "~/Dropbox/emacs/nodejs-mode")
+(add-to-list 'load-path "~/Dropbox/emacs")
+(add-to-list 'load-path "~/Dropbox/emacs/less-css-mode")
+(add-to-list 'load-path "~/Dropbox/emacs/magit-1.2.0")
+(add-to-list 'load-path "~/Dropbox/emacs/emacs-color-theme-solarized")
 (require 'c5-util)
 
 ;; Basic config.
@@ -19,9 +32,6 @@
 (put 'narrow-to-region 'disabled nil)
 (setq-default truncate-lines t)
 (put 'set-goal-column 'disabled nil)
-
-;; external modes
-(add-to-list 'load-path "~/.emacs.d/ext")
 
 ;; Make fringe show buffer boundaries.
 (setq-default indicate-empty-lines t
@@ -145,9 +155,8 @@
 ;;; Programming languages.
 
 ;; LaTeX
-(add-to-list 'load-path "~/Dropbox/emacs/auctex")
+
 (load "auctex.el")
-(add-to-list 'load-path "~/Dropbox/emacs/auctex/preview")
 (load "preview-latex.el")
 (setq TeX-parse-self t)
 (setq TeX-PDF-mode t)
@@ -181,10 +190,6 @@
 (add-hook 'inf-ruby-mode-hook 'ri-bind-key)
 
 ;; Python.
-(add-to-list 'load-path "~/.emacs.d/ext/emacs-deferred")
-(add-to-list 'load-path "~/.emacs.d/ext/auto-complete")
-(add-to-list 'load-path "~/.emacs.d/ext/popup-el")
-(add-to-list 'load-path "~/.emacs.d/ext/emacs-jedi")
 (setenv "PYTHONPATH" "/home/brenmill/wprojects/jabberweb/test/selenium/lib")
 (setq-default python-remove-cwd-from-path nil)
 (setq jedi:setup-keys t)
@@ -202,7 +207,6 @@
 (add-to-list 'auto-mode-alist '("\\.jshintrc\\'" . json-mode))
 
 ;; node js repl
-(add-to-list 'load-path "~/Dropbox/emacs/nodejs-mode")
 (require 'nodejs-mode nil t)
 
 ;; html
@@ -231,8 +235,6 @@
 ;; Failure to find third party code should not break emacs config.
 
 ;; css
-(add-to-list 'load-path "~/Dropbox/emacs")
-(add-to-list 'load-path "~/Dropbox/emacs/less-css-mode")
 (require 'less-css-mode nil t)
 
 ;; scss
@@ -263,11 +265,9 @@
 (setq indent-region-mode t)
 (add-to-list 'auto-mode-alist '("\\.html\\.erb\\'" . eruby-html-mumamo-mode))
 
-(add-to-list 'load-path "~/Dropbox/emacs/magit-1.2.0")
 (require 'rebase-mode nil t)
 (require 'magit nil t)
 
-(add-to-list 'load-path "~/Dropbox/emacs/emacs-color-theme-solarized")
 (when (boundp 'custom-theme-load-path)
   (add-to-list 'custom-theme-load-path "~/Dropbox/emacs/emacs-color-theme-solarized"))
 

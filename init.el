@@ -13,6 +13,7 @@
 (add-to-list 'load-path "~/Dropbox/emacs/less-css-mode")
 (add-to-list 'load-path "~/Dropbox/emacs/magit-1.2.0")
 (add-to-list 'load-path "~/Dropbox/emacs/emacs-color-theme-solarized")
+(add-to-list 'load-path "~/Dropbox/emacs/rsense-0.3/etc")
 (require 'c5-util)
 
 ;; Basic config.
@@ -71,6 +72,9 @@
 (setq cua-auto-tabify-rectangles nil)
 
 ;;; Modes.
+(require 'auto-complete-config)
+(ac-config-default)
+(auto-complete-mode)
 
 ;; ido-mode
 (require 'ido nil t)
@@ -182,6 +186,11 @@
 (eval-after-load 'ruby-mode
   '(add-hook 'ruby-mode-hook 'inf-ruby-setup-keybindings))
 
+;; rsense
+(setenv "RSENSE_HOME" (expand-file-name "~/Dropbox/emacs/rsense-0.3"))
+(setq rsense-home (expand-file-name "~/Dropbox/emacs/rsense-0.3"))
+(require 'rsense nil t)
+
 (require 'yari)
 (defun ri-bind-key ()
   (local-set-key (kbd "C-c d") 'yari))
@@ -189,16 +198,20 @@
 (add-hook 'ruby-mode-hook 'ri-bind-key)
 (add-hook 'inf-ruby-mode-hook 'ri-bind-key)
 
+(c5-defhook c5-ruby-mode-hook (ruby-mode-hook)
+  (when (fboundp 'rsense-version)
+    (local-set-key (kbd "M-TAB") 'ac-complete-rsense)
+    (local-set-key (kbd "M-.") 'c5-rsense-jump-to-definition)
+    (add-to-list 'ac-sources 'ac-source-rsense-method)
+    (add-to-list 'ac-sources 'ac-source-rsense-constant)))
+
 ;; Python.
 (setenv "PYTHONPATH" "/home/brenmill/wprojects/jabberweb/test/selenium/lib")
 (setq-default python-remove-cwd-from-path nil)
 (setq jedi:setup-keys t)
 (c5-defhook c5-python-mode-hook (python-mode-hook)
-  (require 'auto-complete-config)
   (require 'jedi)
   (jedi:setup)
-  (ac-config-default)
-  (auto-complete-mode)
   (local-set-key (kbd "M-.") 'c5-jedi:goto-definition)
   (local-set-key (kbd "M-TAB") 'jedi:complete))
 

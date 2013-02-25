@@ -136,6 +136,12 @@ Inserts string at point."
         (ring-insert find-tag-marker-ring (point-marker))
         (jedi:goto-definition--callback reply other-window)))))
 
+;; ruby navigation
+(defun c5-rsense-jump-to-definition ()
+  (interactive)
+  (ring-insert find-tag-marker-ring (point-marker))
+  (rsense-jump-to-definition))
+
 (defun c5-first-exe (&rest exes)
   (find-if 'executable-find exes))
 

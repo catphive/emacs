@@ -34,6 +34,10 @@
 (setq-default truncate-lines t)
 (put 'set-goal-column 'disabled nil)
 
+;; regexp builder
+(require 're-builder)
+(setq reb-re-syntax 'string)
+
 ;; Make fringe show buffer boundaries.
 (setq-default indicate-empty-lines t
               indicate-buffer-boundaries 'left)

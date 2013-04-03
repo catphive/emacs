@@ -82,6 +82,9 @@
 ;; grep-mode
 (add-to-list 'same-window-buffer-names "*grep*")
 
+(c5-defhook c5-grep-mode-hook (grep-mode-hook)
+  (local-set-key (kbd "r") 'grep-find))
+
 ;; ido-mode
 (require 'ido nil t)
 (c5-try-enable 'ido-mode)

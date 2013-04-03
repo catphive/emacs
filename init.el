@@ -79,6 +79,9 @@
 (ac-config-default)
 (auto-complete-mode)
 
+;; grep-mode
+(add-to-list 'same-window-buffer-names "*grep*")
+
 ;; ido-mode
 (require 'ido nil t)
 (c5-try-enable 'ido-mode)

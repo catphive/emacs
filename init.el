@@ -280,7 +280,10 @@
 (add-to-list 'auto-mode-alist '("\\.html\\.erb\\'" . eruby-html-mumamo-mode))
 
 (require 'rebase-mode nil t)
+
+;; magit
 (require 'magit nil t)
+(setq-default magit-status-buffer-switch-function 'switch-to-buffer)
 
 (when (boundp 'custom-theme-load-path)
   (add-to-list 'custom-theme-load-path "~/Dropbox/emacs/emacs-color-theme-solarized"))

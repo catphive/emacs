@@ -74,6 +74,10 @@
 (cua-selection-mode t)
 (setq cua-auto-tabify-rectangles nil)
 
+;; jump to windows by number
+(require 'window-numbering)
+(window-numbering-mode 1)
+
 ;;; Modes.
 (require 'auto-complete-config)
 (ac-config-default)

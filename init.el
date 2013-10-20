@@ -1,3 +1,11 @@
+;; PATH fix for osx.
+(when (eq system-type 'darwin)
+  (setenv "PATH"
+          "/Users/brenmill/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/share/npm/bin")
+  (setq exec-path
+        (append (split-string (getenv "PATH") ":")
+                (list "/Applications/Emacs.app/Contents/MacOS/libexec" "/Applications/Emacs.app/Contents/MacOS/bin"))))
+
 ;; Load own code.
 (add-to-list 'load-path "~/.emacs.d")
 ;; external modes
@@ -32,6 +40,8 @@
 (put 'narrow-to-region 'disabled nil)
 (setq-default truncate-lines t)
 (put 'set-goal-column 'disabled nil)
+(setq ns-command-modifier 'meta)
+(setq ns-option-modifier 'super)
 
 ;; regexp builder
 (require 're-builder)
@@ -207,7 +217,6 @@
 (add-hook 'inf-ruby-mode-hook 'ri-bind-key)
 
 ;; Python.
-(setenv "PYTHONPATH" "/home/brenmill/wprojects/jabberweb/test/selenium/lib")
 (setq-default python-remove-cwd-from-path nil)
 (setq jedi:setup-keys t)
 (c5-defhook c5-python-mode-hook (python-mode-hook)
@@ -215,6 +224,7 @@
   (jedi:setup)
   (local-set-key (kbd "M-.") 'c5-jedi:goto-definition)
   (local-set-key (kbd "M-TAB") 'jedi:complete))
+(require 'virtualenv)
 
 ;; json-mode
 (require 'json-mode)

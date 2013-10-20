@@ -1249,7 +1249,7 @@ If LOAD"
                                       (list invocation-directory)
                                       exec-suffixes))
          (default-directory (or comp-dir default-directory))
-         (debug-on-error t)
+         ;(debug-on-error t)
          start)
     ;; (when (and file-buf
     ;;            (buffer-modified-p file-buf))
@@ -2032,7 +2032,7 @@ resulting load-history entry."
 Download and install nXhtml."
   (interactive)
   (catch 'command-level
-    (setq debug-on-error t)
+    ;(setq debug-on-error t)
     (let* ((this-dir (file-name-directory web-vcs-el-this))
            (root-url (nxhtml-download-root-url nil))
            ;;(files '("nxhtml-web-vcs.el" "nxhtml-base.el"))

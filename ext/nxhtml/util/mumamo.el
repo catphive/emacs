@@ -5284,7 +5284,7 @@ explanation."
 (defun mumamo-post-command-1 (&optional no-debug)
   "See `mumamo-post-command'.
 Turn on `debug-on-error' unless NO-DEBUG is nil."
-  (unless no-debug (setq debug-on-error t))
+  ;(unless no-debug (setq debug-on-error t))
   (setq mumamo-find-chunks-level 0)
   (mumamo-msgfntfy "mumamo-post-command-1 ENTER: font-lock-mode=%s" font-lock-mode)
   (if font-lock-mode

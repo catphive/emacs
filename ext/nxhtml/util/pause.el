@@ -621,7 +621,7 @@ Note: Another easier alternative might be to use
   (pause-start-1 after-minutes cus-file))
 
 (defun pause-start-1 (after-minutes cus-file)
-  (setq debug-on-error t)
+  ;(setq debug-on-error t)
   (pause-cancel-timer)
   (when (and cus-file (file-exists-p cus-file))
     (let ((args (pause-get-group-saved-customizations 'pause cus-file)))

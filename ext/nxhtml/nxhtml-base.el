@@ -52,7 +52,6 @@
 
 (defconst nxhtml-menu:version "2.08")
 (setq message-log-max t)
-(setq debug-on-error t)
 
 (defconst nxhtml-install-dir
   (file-name-directory (or load-file-name

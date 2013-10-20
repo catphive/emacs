@@ -1247,7 +1247,7 @@ Delete the frames that were used before."
           (message (propertize "Winsav: No default configuration file found"
                                'face 'secondary-selection))
           t) ;; Ok
-      (setq debug-on-error t) ;; fix-me
+      ;(setq debug-on-error t) ;; fix-me
       (if (file-exists-p conf-file)
           (progn
             (load conf-file nil nil t)

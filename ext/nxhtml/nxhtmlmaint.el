@@ -420,7 +420,7 @@ then instead delete the compiled files."
           (when (file-exists-p elc-dst)
             (delete-file elc-dst)
             (message "Deleted %s" elc-dst))
-        (setq debug-on-error t)
+        ;(setq debug-on-error t)
         (when (or force (file-newer-than-file-p el-src elc-dst))
           ;;(message "fn=%s" (file-name-nondirectory el-src))
           (when t ;;(string= "nxhtml-menu.el" (file-name-nondirectory el-src))

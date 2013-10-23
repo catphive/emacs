@@ -91,8 +91,8 @@
 
 ;;; Modes.
 (require 'auto-complete-config)
-;;(ac-config-default)
-;;(auto-complete-mode)
+(ac-config-default)
+(auto-complete-mode)
 
 ;; grep-mode
 (add-to-list 'same-window-buffer-names "*grep*")

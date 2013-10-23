@@ -21,6 +21,7 @@
 (add-to-list 'load-path "~/Dropbox/emacs/less-css-mode")
 (add-to-list 'load-path "~/Dropbox/emacs/magit-1.2.0")
 (add-to-list 'load-path "~/Dropbox/emacs/emacs-color-theme-solarized")
+(add-to-list 'load-path "~/Dropbox/emacs/tern/emacs")
 (require 'c5-util)
 
 ;; Basic config.
@@ -90,8 +91,8 @@
 
 ;;; Modes.
 (require 'auto-complete-config)
-(ac-config-default)
-(auto-complete-mode)
+;;(ac-config-default)
+;;(auto-complete-mode)
 
 ;; grep-mode
 (add-to-list 'same-window-buffer-names "*grep*")
@@ -301,6 +302,15 @@
 ;; Javascript
 (add-to-list 'load-path "~/Dropbox/emacs/js2-mode")
 (autoload 'js2-mode "js2-mode" nil t)
+(setq-default js2-concat-multiline-strings 'eol)
+
+;; Tern
+(autoload 'tern-mode "tern.el" nil t)
+(eval-after-load 'tern
+   '(progn
+      ;(setq tern-ac-on-dot nil)
+      (require 'tern-auto-complete)
+      (tern-ac-setup)))
 
 ;; clean up javascript modes added by nxhtml.
 (setq auto-mode-alist (c5-assoc-remove "\\.js\\'" auto-mode-alist))
@@ -315,7 +325,9 @@
                       "it" "describe" "expect" "beforeEach" "afterEach"
                       "jasmine" "spyOn"))
   (subword-mode 1)
-  (setq forward-sexp-function nil))
+  (setq forward-sexp-function nil)
+  (tern-mode 1)
+  (auto-complete-mode))
 
 ;; graphviz
 (setq-default graphviz-dot-auto-indent-on-semi nil)

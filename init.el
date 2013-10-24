@@ -281,7 +281,13 @@
           (add-to-list 'byte-compile-not-obsolete-vars
                        'font-lock-syntactic-keywords)))
 
+;; mumamo/nxhtml
 (load "~/.emacs.d/ext/nxhtml/autostart.el")
+
+;; suppress obnoxious warnings.
+(eval-after-load "mumamo"
+    '(setq mumamo-per-buffer-local-vars
+           (delq 'buffer-file-name mumamo-per-buffer-local-vars)))
 
 ;; clear out nxhtml modes used on html...
 (setq auto-mode-alist (c5-assoc-remove "\\.html\\'" auto-mode-alist))

@@ -26,6 +26,7 @@
 
 ;; Basic config.
 (setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
 (transient-mark-mode 1)
 (global-font-lock-mode 1)
 (tool-bar-mode -1)
@@ -92,6 +93,7 @@
 ;;; Modes.
 (require 'auto-complete-config)
 (ac-config-default)
+(setq ac-ignore-case nil)
 (auto-complete-mode)
 
 ;; grep-mode
